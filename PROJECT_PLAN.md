@@ -1,76 +1,76 @@
-# 📄 FE DEPLOYMENT PLAN (Vue.js – Shopee Clone)
+# 📄 KẾ HOẠCH TRIỂN KHAI FE (Vue.js – Shopee Clone)
 
-**Goal**: Complete Shopee Clone FE in 4–8 weeks with 4 personnel.
+**Mục tiêu**: Hoàn thành Shopee Clone FE trong 4–8 tuần với 4 nhân sự.
 
 ---
 
-## 0️⃣ Personnel & Roles
+## 0️⃣ Nhân sự & Vai trò
 
 ### 👤 FE Lead (Antigravity)
-**Responsibilities**:
-* FE Architecture & Folder Structure
-* Git Management (Branch, Review, PR)
+**Trách nhiệm**:
+* Thiết kế kiến trúc FE & Cấu trúc thư mục
+* Quản lý Git (Branch, Review, PR)
 * Core: Infrastructure, Auth, Shared Core Components
-* Weekly Progress Check
+* Kiểm tra tiến độ hằng tuần
 
-### 👥 FE Dev Team
-| Dev | Role | Domain |
+### 👥 Team FE Dev
+| Dev | Vai trò | Domain |
 |---|---|---|
 | **Dev A** | UI + Shared Component | `shared` / `home` |
 | **Dev B** | Business UI | `product` |
 | **Dev C** | Business Flow | `cart` / `order` |
 
-**Rule**: Do not work outside assigned domain without Lead approval.
+**Quy tắc**: Không code ngoài domain được giao khi chưa có sự đồng ý của Lead.
 
 ---
 
-## 1️⃣ Timeline & Weekly Deadlines
+## 1️⃣ Timeline & Deadline Hằng Tuần
 
-### 🗓️ Week 1 – Setup & Foundation
+### 🗓️ Tuần 1 – Setup & Foundation
 **Tasks**:
 - [ ] **Lead**: Init Project, Setup Vue3+TS+Vite, ESLint/Prettier/Tailwind, Folder Structure, Git Flow.
-- [ ] **Dev A**: Analyze UI Shopee (Header, Footer, Layout).
-- [ ] **Dev B**: Analyze Product UI (list, card, detail).
-- [ ] **Dev C**: Analyze Cart / Checkout UI.
+- [ ] **Dev A**: Phân tích UI Shopee (Header, Footer, Layout).
+- [ ] **Dev B**: Phân tích Product UI (list, card, detail).
+- [ ] **Dev C**: Phân tích Cart / Checkout UI.
 
-📌 **Week 1 Output**: Project runnable, Layout skeleton ready, Task list defined.
+📌 **Output Tuần 1**: Project chạy được, Layout khung sẵn sàng, Danh sách Task đã chốt.
 
-### 🗓️ Week 2 – Shared Components & Auth
+### 🗓️ Tuần 2 – Shared Components & Auth
 **Tasks**:
-- [ ] **Lead**: Axios Setup, Auth Flow, Token Refresh, Router Guard.
+- [ ] **Lead**: Setup Axios, Auth Flow, Token Refresh, Router Guard.
 - [ ] **Dev A**: Buttons, Inputs, Modals, Badges, Pagination.
 - [ ] **Dev B**: ProductCard Component.
 - [ ] **Dev C**: CartItem Component.
 
-📌 **Week 2 Output**: Login flow working, Shared components usable.
+📌 **Output Tuần 2**: Login flow hoạt động, Shared components dùng được.
 
-### 🗓️ Week 3 – Home & Product
+### 🗓️ Tuần 3 – Home & Product
 **Tasks**:
-- [ ] **Lead**: Review & Refactor Shared, Define Product Use-cases.
+- [ ] **Lead**: Review & Refactor Shared, Định nghĩa Product use-cases.
 - [ ] **Dev A**: HomePage, Banner, Category List.
 - [ ] **Dev B**: ProductListPage, ProductDetailPage.
 - [ ] **Dev C**: CartPage UI.
 
-📌 **Week 3 Output**: Product browsing, Add to Cart (UI + State).
+📌 **Output Tuần 3**: Duyệt sản phẩm, Add to Cart (UI + State).
 
-### 🗓️ Week 4 – Cart & Order Flow
+### 🗓️ Tuần 4 – Cart & Order Flow
 **Tasks**:
-- [ ] **Lead**: Business Flow Control, API Layout Review.
+- [ ] **Lead**: Kiểm soát Business Flow, Review API mapping.
 - [ ] **Dev A**: UI Polish + Responsive.
-- [ ] **Dev B**: Product State Handling.
+- [ ] **Dev B**: Xử lý Product State.
 - [ ] **Dev C**: Checkout, Order Summary.
 
-📌 **Week 4 Output**: Complete Purchase Flow (Mock API).
+📌 **Output Tuần 4**: Luồng mua hàng hoàn chỉnh (Mock API).
 
 ---
 
-## 2️⃣ Task Assignment Rules
-Each task must have:
-* **Assignee**
+## 2️⃣ Quy tắc Giao Việc (Task Assignment)
+Mỗi task bắt buộc phải có:
+* **Assignee** (Người phụ trách)
 * **Deadline**
-* **Output**
+* **Output** (Kết quả bàn giao)
 
-**Example**:
+**Ví dụ**:
 ```
 [FE][Product][Dev B] Create ProductCard component
 - Path: src/domains/product/components/ProductCard.vue
@@ -78,14 +78,13 @@ Each task must have:
 - PR required
 ```
 
-## 3️⃣ Git Rules
+## 3️⃣ Quy tắc Git
 * **Branches**: `main`, `develop`, `feature/<domain>-<task>`
 * **Commits**: `feat(product): ...`, `fix(auth): ...`
-* **PRs**: < 500 lines, Screenshot included, Lead approval required.
+* **PRs**: < 500 dòng, Có Screenshot, Bắt buộc Lead approve.
 
 ---
 
-## 4️⃣ Weekly Check
-* **Format**: Done / Doing / Blocker.
-* **Failure**: Late task must have reason. Poor code must be fixed before new task.
-
+## 4️⃣ Kiểm tra Hằng Tuần
+* **Format**: Done (Xong) / Doing (Đang làm) / Blocker (Vướng mắc).
+* **Lưu ý**: Trễ deadline phải có lý do. Code chất lượng kém phải sửa xong mới được nhận task mới.

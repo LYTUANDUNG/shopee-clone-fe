@@ -1,7 +1,7 @@
 # Shopee Clone (Frontend)
 
-## 📌 Introduction
-This is the Frontend repository for the Shopee Clone project, built with **Vue 3**, **TypeScript**, and **Vite**.
+## 📌 Giới thiệu
+Đây là repository Frontend cho dự án Shopee Clone, được xây dựng bằng **Vue 3**, **TypeScript**, và **Vite**.
 
 ## 🚀 Tech Stack
 - **Framework**: Vue 3 (Composition API)
@@ -12,13 +12,13 @@ This is the Frontend repository for the Shopee Clone project, built with **Vue 3
 - **Styling**: TailwindCSS
 - **HTTP Client**: Axios
 
-## 🛠 Project Setup
+## 🛠 Cài đặt Dự án
 
-### Prerequisites
-- Node.js (Latest LTS recommended)
+### Yêu cầu
+- Node.js (Khuyên dùng bản LTS mới nhất)
 - npm
 
-### Installation
+### Cài đặt
 ```bash
 git clone git@github.com:<org>/shopee-fe.git
 cd shopee-fe
@@ -35,32 +35,32 @@ npm run dev
 npm run build
 ```
 
-## 🌿 Git Workflow
+## 🌿 Quy trình Git (Git Flow)
 
-### Branching Strategy
-- `main`: Production-ready code (Protected).
-- `develop`: Integration branch (Base for features).
-- `feature/<domain>-<task>`: Feature branches (e.g., `feature/auth-login`, `feature/product-card`).
+### Chiến lược Branch
+- `main`: Code production (Được bảo vệ).
+- `develop`: Branch tích hợp (Nền tảng cho các tính năng).
+- `feature/<domain>-<task>`: Branch tính năng (Ví dụ: `feature/auth-login`, `feature/product-card`).
 
-### Commit Convention
+### Quy tắc Commit
 Format: `<type>(<scope>): <subject>`
-Example: 
+Ví dụ: 
 - `feat(product): add product card component`
 - `fix(cart): update total calculation`
 - `chore: update dependencies`
 
-## 📂 Project Structure
+## 📂 Cấu trúc Dự án
 ```txt
 src/
- ├─ domains/       # Domain-specific logic (clean architecture)
- ├─ shared/        # Shared components and utilities
- ├─ infrastructure/# API clients, global configurations
- ├─ router/        # Routing configuration
- ├─ assets/        # Static assets
+ ├─ domains/       # Logic theo nghiệp vụ (clean architecture)
+ ├─ shared/        # Các component và tiện ích dùng chung
+ ├─ infrastructure/# API clients, cấu hình global
+ ├─ router/        # Cấu hình Routing
+ ├─ assets/        # Tài nguyên tĩnh (ảnh, fonts)
  ├─ styles/        # Global styles
 ```
 
-## 👥 Team
+## 👥 Nhóm phát triển
 - **FE Lead**: Antigravity
 - **FE Devs**: Dev A, Dev B, Dev C
 
