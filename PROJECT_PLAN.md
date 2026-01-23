@@ -1,90 +1,94 @@
-# 📄 KẾ HOẠCH TRIỂN KHAI FE (Vue.js – Shopee Clone)
+# 📄 FE MASTER PLAN (Standard International Workflow)
 
-**Mục tiêu**: Hoàn thành Shopee Clone FE trong 4–8 tuần với 4 nhân sự.
+**Phương pháp quản lý**: 8 Steps FE Standard.
+**Mục tiêu**: Shopee Clone (Vue 3 + TS).
 
 ---
 
-## 0️⃣ Nhân sự & Vai trò
+## 1️⃣ Giai đoạn Khởi động (Kickoff)
 
-### 👤 FE Lead (Antigravity)
-**Trách nhiệm**:
-* Thiết kế kiến trúc FE & Cấu trúc thư mục
-* Quản lý Git (Branch, Review, PR)
-* Core: Infrastructure, Auth, Shared Core Components
-* Kiểm tra tiến độ hằng tuần
+### 🎯 Scope Dự Án
+*   **User**: End-user mua hàng (B2C).
+*   **Core Features**: Home, Product Listing, Product Detail, Cart, Checkout, Auth.
+*   **Design Reference**: Shopee.vn (Clone sát UI/UX).
+*   **Backend**: Mock API (trong Phase đầu), sau đó connect Real API.
 
-### 👥 Team FE Dev
-| Dev | Vai trò | Domain |
+### 📋 Danh sách Modules (Features)
+1.  **Auth**: Login, Register, Forgot Password, Profile.
+2.  **Home**: Banner, Categories, Flash Sale.
+3.  **Discovery**: Product List, Search, Filter, Sort.
+4.  **Detail**: Product Info, Variants (Color/Size), Gallery, Ratings.
+5.  **Cart**: Cart Items, Shop Grouping, Voucher.
+6.  **Checkout**: Address, Shipping, Payment, Order Summary.
+
+---
+
+## 2️⃣ Kiến Trúc & Stack (Architecture)
+*Xem chi tiết tại README.md*
+
+*   **Stack**: Vue 3 (Composition API), Vite, Pinia, TailwindCSS, Axios.
+*   **Structure**: `src/features/` (Domain Driven Design).
+
+---
+
+## 3️⃣ Phân Chia Task & Tiến Độ (Task Assignment)
+
+**Quản lý**: Theo Feature (Trọn gói UI + Logic + API).
+
+### 👥 Team Allocation
+
+| Dev | Feature Zone | Trách nhiệm chi tiết |
 |---|---|---|
-| **Dev A** | UI + Shared Component | `shared` / `home` |
-| **Dev B** | Business UI | `product` |
-| **Dev C** | Business Flow | `cart` / `order` |
-
-**Quy tắc**: Không code ngoài domain được giao khi chưa có sự đồng ý của Lead.
-
----
-
-## 1️⃣ Timeline & Deadline Hằng Tuần
-
-### 🗓️ Tuần 1 – Setup & Foundation
-**Tasks**:
-- [ ] **Lead**: Init Project, Setup Vue3+TS+Vite, ESLint/Prettier/Tailwind, Folder Structure, Git Flow.
-- [ ] **Dev A**: Phân tích UI Shopee (Header, Footer, Layout).
-- [ ] **Dev B**: Phân tích Product UI (list, card, detail).
-- [ ] **Dev C**: Phân tích Cart / Checkout UI.
-
-📌 **Output Tuần 1**: Project chạy được, Layout khung sẵn sàng, Danh sách Task đã chốt.
-
-### 🗓️ Tuần 2 – Shared Components & Auth
-**Tasks**:
-- [ ] **Lead**: Setup Axios, Auth Flow, Token Refresh, Router Guard.
-- [ ] **Dev A**: Buttons, Inputs, Modals, Badges, Pagination.
-- [ ] **Dev B**: ProductCard Component.
-- [ ] **Dev C**: CartItem Component.
-
-📌 **Output Tuần 2**: Login flow hoạt động, Shared components dùng được.
-
-### 🗓️ Tuần 3 – Home & Product
-**Tasks**:
-- [ ] **Lead**: Review & Refactor Shared, Định nghĩa Product use-cases.
-- [ ] **Dev A**: HomePage, Banner, Category List.
-- [ ] **Dev B**: ProductListPage, ProductDetailPage.
-- [ ] **Dev C**: CartPage UI.
-
-📌 **Output Tuần 3**: Duyệt sản phẩm, Add to Cart (UI + State).
-
-### 🗓️ Tuần 4 – Cart & Order Flow
-**Tasks**:
-- [ ] **Lead**: Kiểm soát Business Flow, Review API mapping.
-- [ ] **Dev A**: UI Polish + Responsive.
-- [ ] **Dev B**: Xử lý Product State.
-- [ ] **Dev C**: Checkout, Order Summary.
-
-📌 **Output Tuần 4**: Luồng mua hàng hoàn chỉnh (Mock API).
+| **Dev A** | **Core Base & Home** | - Shared Components (Button, Input, Modal)<br>- Feature: Home (Banner, Categories)<br>- Feature: Auth (Login UI & Logic) |
+| **Dev B** | **Discovery (Listing)** | - Feature: Product List (Grid, Pagination)<br>- Components: ProductCard (Badge, Price)<br>- Filter & Search Logic |
+| **Dev C** | **Conversion (Detail & Cart)** | - Feature: Product Detail (Gallery, Variant Selector)<br>- Feature: Cart (Logic tính tiền, Voucher)<br>- Feature: Checkout UI |
+| **FE Lead**| **Architecture & Review** | - Setup Infra (Axios, Router, Pinia)<br>- Code Review (Quality Gate)<br>- Merge PR & Release |
 
 ---
 
-## 2️⃣ Quy tắc Giao Việc (Task Assignment)
-Mỗi task bắt buộc phải có:
-* **Assignee** (Người phụ trách)
-* **Deadline**
-* **Output** (Kết quả bàn giao)
+## 4️⃣ Timeline Triển Khai
 
-**Ví dụ**:
-```
-[FE][Product][Dev B] Create ProductCard component
-- Path: src/domains/product/components/ProductCard.vue
-- Deadline: Week 2
-- PR required
-```
+### 🗓️ Tuần 1: Setup & Base Components
+*   **Lead**: Setup Project, Folder Structure, Git Rules.
+*   **Dev A**: Xây dựng UI Kit (BaseButton, BaseInput) + Layout (Header/Footer).
+*   **Dev B**: Dựng ProductCard (Component khó nhất) + Grid Layout.
+*   **Dev C**: Dựng trang Product Detail (Skeleton + Gallery).
 
-## 3️⃣ Quy tắc Git
-* **Branches**: `main`, `develop`, `feature/<domain>-<task>`
-* **Commits**: `feat(product): ...`, `fix(auth): ...`
-* **PRs**: < 500 dòng, Có Screenshot, Bắt buộc Lead approve.
+### 🗓️ Tuần 2: Feature Implementation (Happy Path)
+*   **Dev A**: Auth Flow (Login/Register/Profile).
+*   **Dev B**: Product Listing (Filter giả, Search giả).
+*   **Dev C**: Variant Selector (Logic chọn size/màu) + Add to Cart UI.
+
+### 🗓️ Tuần 3: Logic & State Management
+*   **All**: Connect Mock API / Real API.
+*   **Dev A**: User State (Pinia Auth Store).
+*   **Dev B**: Fetching Data List (Loading/Error handling).
+*   **Dev C**: Cart Store (Tính toán tiền, update số lượng).
+
+### 🗓️ Tuần 4: Checkout & Polish
+*   **Dev C**: Checkout Flow (Address -> Payment).
+*   **All**: QA, Fix bugs, Mobile Responsive Check.
 
 ---
 
-## 4️⃣ Kiểm tra Hằng Tuần
-* **Format**: Done (Xong) / Doing (Đang làm) / Blocker (Vướng mắc).
-* **Lưu ý**: Trễ deadline phải có lý do. Code chất lượng kém phải sửa xong mới được nhận task mới.
+## 5️⃣ Quy Trình QA & Code Review
+**Manager FE Check List:**
+1.  Reload trang có giữ được State (giỏ hàng/login) không?
+2.  Mạng chậm (Slow 3G) có hiện Loading Skeleton không?
+3.  Token hết hạn có auto logout/refresh không?
+4.  Code có tách logic ra `composables` không? (DRY principle).
+
+**Definition of Done (DoD):**
+*   [ ] UI giống Design > 95%.
+*   [ ] Không lỗi Console Log.
+*   [ ] Đã qua bài test Happy Case & Edge Case.
+*   [ ] Code đã được Lead Approve.
+
+---
+
+## 6️⃣ Hướng Dẫn Git Flow Cho Team
+*   **Bước 1**: `git checkout develop` -> `git pull`
+*   **Bước 2**: `git checkout -b feature/product-card`
+*   **Bước 3**: Code... -> `git commit -m "feat(product): implement card ui"`
+*   **Bước 4**: `git push origin feature/product-card`
+*   **Bước 5**: Tạo Pull Request (PR) về `develop`. **KHÔNG MERGE THẲNG**.
