@@ -2,14 +2,22 @@
 import { Product } from "../../models/product.model";
 
 defineProps<{ product: Product }>();
+const emit = defineEmits<{
+  click: [productId: string]
+}>();
 </script>
 
 <template>
-    <div class="product-details">
+    <div class="product-details cursor-pointer" @click="emit('click', product.id)">
         <img :src="product.image" :alt="product.name" class="product-image" />
         <div class="product-meta">
              <div class="product-name">{{ product.name }}</div>
-             <img src="https://down-vn.img.susercontent.com/file/vn-50009109-90696f8c7e0c8326eae0747f0d0e6533" class="voucher-icon" alt="voucher" />
+             <img 
+               v-if="product.voucherLabel"
+               :src="product.voucherLabel" 
+               class="voucher-icon" 
+               alt="voucher" 
+             />
         </div>
     </div>
 </template>
@@ -24,7 +32,7 @@ defineProps<{ product: Product }>();
 }
 
 .product-meta {
-  @apply flex flex-col gap-1;
+  @apply flex flex-col gap-1 items-start;
 }
 
 .product-name {

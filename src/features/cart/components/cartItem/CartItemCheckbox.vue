@@ -9,7 +9,7 @@ const checked = defineModel<boolean>('checked');
 </script>
 
 <template>
-  <div class="flex items-center justify-center h-full">
+  <div class="flex items-center justify-center h-full select-none cursor-default">
     <Checkbox
       v-if="isInStock"
       v-model:checked="checked"

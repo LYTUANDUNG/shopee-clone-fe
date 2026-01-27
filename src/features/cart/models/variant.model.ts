@@ -1,34 +1,33 @@
-export interface VariantOption {
-  name: string;
-  value: string;
+export interface VariantDefinition {
+  name: string; 
+  options: string[]; 
 }
 
-export class Variant {
+export class VariantItem {
   readonly id: string;
-  readonly options: VariantOption[];
-  readonly stock: number;
+  readonly tierIndexes: number[]; 
+  readonly attributes: Record<string, string>; 
   readonly price: number;
-  readonly image: string;
+  readonly stock: number;
+  readonly image?: string;
 
   constructor(
     id: string,
-    options: VariantOption[],
-    stock: number,
+    tierIndexes: number[],
+    attributes: Record<string, string>,
     price: number,
-    image: string
+    stock: number,
+    image?: string
   ) {
     this.id = id;
-    this.options = options;
-    this.stock = stock;
+    this.tierIndexes = tierIndexes;
+    this.attributes = attributes;
     this.price = price;
+    this.stock = stock;
     this.image = image;
   }
 
   get isInStock(): boolean {
     return this.stock > 0;
-  }
-
-  get optionValues(): string {
-    return this.options.map((option) => option.value).join(", ");
   }
 }

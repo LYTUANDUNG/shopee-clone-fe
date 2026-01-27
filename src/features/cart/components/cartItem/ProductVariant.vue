@@ -1,59 +1,60 @@
 <script lang="ts" setup>
-import { ref, computed } from "vue";
-import { Variant } from "../../models/variant.model";
+import { computed } from "vue";
+import type { VariantDefinition, VariantItem } from "../../models/variant.model";
 import { ChevronDown } from "lucide-vue-next";
 import VariantPopup from "./VariantPopup.vue";
+import { useProductVariant } from "../../composables/useProductVariant";
 
-interface VariantUIOption {
-  name: string;
-  value: string;
-  disabled: boolean;
-}
-
-const props = withDefaults(
-  defineProps<{
-    variant: Variant;
-    options?: VariantUIOption[];
-  }>(),
-  {
-    options: () => [],
-  }
-);
-
-const isReadOnly = computed(() => props.options.length <= 1);
-
-const selectedOption = ref("");
-
-const handleSelect = (opt: VariantUIOption) => {
-  if (opt.disabled) return;
-  selectedOption.value = opt.value;
-};
+const props = defineProps<{
+  definitions: VariantDefinition[];
+  variations: VariantItem[];
+  isInStock?: boolean;
+}>();
 
 const emit = defineEmits<{
   confirm: [];
 }>();
 
-const handleConfirm = () => {
-  emit("confirm");
+const { 
+  selectedAttributes, 
+  currentVariantText, 
+  popupGroups, 
+  selectOption 
+} = useProductVariant(props);
+
+const handleSelect = (groupName: string, opt: { value: string }) => {
+  selectOption(groupName, opt.value);
 };
+
+const handleConfirm = () => {
+    emit('confirm');
+};
+
+const isReadOnly = computed(() => props.definitions.length === 0);
 </script>
 
 <template>
-  <div class="variant-container">
+  <div class="variant-container select-none">
     <VariantPopup
       v-if="!isReadOnly"
-      :options="options"
-      :selected-option="selectedOption"
+      :groups="popupGroups"
+      :selected-options="selectedAttributes"
       @confirm="handleConfirm"
       @select="handleSelect"
     >
-      <template #trigger>
-        <div class="variant-trigger group">
+      <template #trigger="{ isOpen }">
+        <div 
+           class="variant-trigger group cursor-pointer"
+           :class="{ 'border-orange-500': isOpen }"
+        >
           <div class="flex items-center justify-between w-full">
             <span class="label-text">Phân Loại:</span>
-            <ChevronDown class="icon-arrow group-hover:text-gray-600" />
+            <ChevronDown 
+              class="icon-arrow group-hover:text-gray-600 transition-transform duration-200" 
+              :class="{ 'rotate-180': isOpen }"
+            />
           </div>
-          <div class="variant-value mt-1">{{ variant.optionValues }}</div>
+          <div class="variant-value mt-1">{{ currentVariantText }}</div>
         </div>
       </template>
     </VariantPopup>
@@ -61,7 +62,8 @@ const handleConfirm = () => {
       <div class="flex items-center justify-between w-full">
         <span class="label-text">Phân Loại:</span>
       </div>
-      <div class="variant-value mt-1">{{ variant.optionValues }}</div>
+
+      <div class="variant-value mt-1">{{ currentVariantText }}</div>
     </div>
   </div>
 </template>

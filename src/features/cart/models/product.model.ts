@@ -1,29 +1,37 @@
-import { Variant } from './variant.model';
+import type { VariantDefinition, VariantItem } from './variant.model';
 
 export class Product {
   readonly id: string;
   readonly name: string;
-  readonly variant: Variant;
+  readonly definitions: VariantDefinition[];
+  readonly variations: VariantItem[];
+  readonly voucherLabel?: string;
+  readonly image: string; 
 
-  constructor(id: string, name: string, variant: Variant) {
+  constructor(
+    id: string, 
+    name: string, 
+    definitions: VariantDefinition[], 
+    variations: VariantItem[],
+    image: string,
+    voucherLabel?: string
+  ) {
     this.id = id;
     this.name = name;
-    this.variant = variant;
-  }
-
-  get isInStock(): boolean {
-    return this.variant.isInStock;
+    this.definitions = definitions;
+    this.variations = variations;
+    this.image = image;
+    this.voucherLabel = voucherLabel;
   }
 
   get price(): number {
-    return this.variant.price;
+    if (this.variations.length > 0) {
+      return this.variations[0].price; 
+    }
+    return 0;
   }
 
-  get image(): string {
-    return this.variant.image;
-  }
-
-  get optionValues(): string {
-    return this.variant.optionValues;
+  get isInStock(): boolean {
+    return this.variations.some((v) => v.isInStock);
   }
 }
