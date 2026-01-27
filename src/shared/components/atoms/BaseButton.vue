@@ -1,8 +1,19 @@
 <template>
-  <button :class="['inline-flex items-center justify-center transition-all duration-200 active:scale-95 border border-transparent rounded-sm cursor-pointer', sizeClasses, bgColor, textColor, customClasses]" v-bind="$attrs">
+  <button
+      :class="[
+      'inline-flex items-center justify-center transition-all duration-200 active:scale-95 border border-transparent cursor-pointer',
+      sizeClasses,
+      bgColor,
+      textColor,
+      rounded,
+      customClasses
+    ]"
+      v-bind="$attrs"
+      @click="handleClick"
+  >
     <component :is="leftIcon" v-if="leftIcon" :size="iconSize" class="flex-shrink-0 stroke-current" />
 
-    <span :class="labelClasses">
+    <span v-if="label || $slots.default" :class="labelClasses">
       <slot>{{ label }}</slot>
     </span>
 
@@ -21,6 +32,7 @@ interface ButtonProps {
   bgColor?: string;
   textColor?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
+  rounded?: string;
   customClasses?: string;
 }
 
@@ -29,10 +41,21 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   iconSize: 18,
   bgColor: 'bg-shopee-orange',
   textColor: 'text-white',
-  size: 'md'
+  size: 'md',
+  rounded: '',
+  customClasses: ''
 });
 
+const emit = defineEmits<{
+  (e: 'click', event: MouseEvent): void;
+}>();
+
 const slots = useSlots();
+
+const handleClick = (event: MouseEvent) => {
+  emit('click', event);
+};
+
 const labelClasses = computed(() => ({
   'ml-2': props.leftIcon && (props.label || slots.default),
   'mr-2': props.rightIcon && (props.label || slots.default),
