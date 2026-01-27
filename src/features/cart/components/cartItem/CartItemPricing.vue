@@ -37,7 +37,7 @@ const totalPrice = computed(() => props.unitPrice * quantity.value);
 
 <style scoped>
 .pricing-grid {
-  @apply grid grid-cols-3 items-center gap-2;
+  @apply contents;
 }
 
 .col-unit-price {
