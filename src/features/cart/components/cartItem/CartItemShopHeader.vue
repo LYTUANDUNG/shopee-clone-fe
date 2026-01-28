@@ -4,7 +4,8 @@ import IconShopeeChat from './IconShopeeChat.vue';
 
 defineProps<{ shop: Shop }>();
 const emit = defineEmits<{
-  click: [shopId: string]
+  click: [shopId: string];
+  chat: [shopId: string];
 }>();
 </script>
 
@@ -12,7 +13,7 @@ const emit = defineEmits<{
     <div v-if="shop.isOfficial" class="shop-header cursor-pointer" @click="emit('click', shop.id)">
        <div class="mall-badge">Mall</div>
        <span class="shop-name">{{ shop.name }}</span>
-       <div class="chat-icon-wrapper">
+       <div class="chat-icon-wrapper" @click.stop="emit('chat', shop.id)">
           <IconShopeeChat class="chat-icon" style="font-size: 20px;" />
        </div>
     </div>

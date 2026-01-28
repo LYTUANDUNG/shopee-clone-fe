@@ -9,6 +9,7 @@ defineProps<{ product: Product; shop: Shop, variantImg: string }>();
 const emit = defineEmits<{
   clickShop: [shopId: string];
   clickProduct: [productId: string];
+  chat: [shopId: string];
 }>();
 </script>
 
@@ -17,6 +18,7 @@ const emit = defineEmits<{
     <CartItemShopHeader 
       :shop="shop" 
       @click="(id) => emit('clickShop', id)"
+      @chat="(id) => emit('chat', id)"
     />
     <CartItemProductDetails 
       :product="product" 

@@ -11,10 +11,9 @@ const emit = defineEmits<{
     <button class="action-btn text-black hover:text-[#ee4d2d]" @click="emit('remove')">
       Xóa
     </button>
-    
     <button class="action-btn text-[#ee4d2d] flex items-center gap-0.5" @click="emit('findSimilar')">
-      <span>Tìm sản phẩm tương tự</span>
-      <ChevronDown :size="14" />
+      <span class="pl-[24px]">Tìm sản phẩm tương tự</span>
+      <ChevronDown :size="26" />
     </button>
   </div>
 </template>

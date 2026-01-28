@@ -14,15 +14,6 @@ import {
 const props = defineProps<{
   item: CartItem;
   selected?: boolean;
-  variantGroups?: {
-    name: string;
-    options: {
-      name: string;
-      value: string;
-      disabled: boolean;
-      active?: boolean;
-    }[];
-  }[];
 }>();
 
 const emit = defineEmits<{
@@ -31,7 +22,8 @@ const emit = defineEmits<{
   updateQuantity: [cartId: string, quantity: number];
   clickShop: [shopId: string];
   clickProduct: [productId: string];
-  "update:selected": [selected: boolean];
+  chat: [shopId: string];
+  select: [cartId: string, selected: boolean];
   updateVariant: [cartId: string, variant: ProductVariantType];
 }>();
 
@@ -51,7 +43,7 @@ const handleUpdateVariant = (variant: ProductVariantType | undefined) => {
       <CartItemCheckbox
         :is-in-stock="isInStock"
         :checked="selected"
-        @update:checked="(val) => emit('update:selected', !!val)"
+        @update:checked="(val) => emit('select', item.id, !!val)"
       />
     </div>
 
@@ -63,6 +55,7 @@ const handleUpdateVariant = (variant: ProductVariantType | undefined) => {
         :variant-img="item.variant?.image"
         @click-shop="(id) => emit('clickShop', id)"
         @click-product="(id) => emit('clickProduct', id)"
+        @chat="(id) => emit('chat', id)"
       />
     </div>
 
@@ -86,7 +79,7 @@ const handleUpdateVariant = (variant: ProductVariantType | undefined) => {
     />
 
     <!-- Actions (col-7) -->
-    <div class="flex justify-end items-center">
+    <div class="flex justify-center items-center">
       <CartItemActions
         @remove="emit('remove', item.id)"
         @find-similar="emit('findSimilar', item.product.id)"

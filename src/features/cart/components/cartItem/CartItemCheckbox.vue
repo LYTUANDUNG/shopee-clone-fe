@@ -14,6 +14,6 @@ const checked = defineModel<boolean>('checked');
       v-if="isInStock"
       v-model:checked="checked"
     />
-    <span v-else class="text-xs text-gray-400 font-medium">Hết hàng</span>
+    <span v-else class="text-[10px] text-gray-500 font-medium bg-gray-100 px-1 py-0.5 rounded-sm whitespace-nowrap">Hết hàng</span>
   </div>
 </template>
