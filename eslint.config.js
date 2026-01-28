@@ -1,30 +1,35 @@
 import pluginVue from 'eslint-plugin-vue'
-import tseslint from 'typescript-eslint'
-import js from '@eslint/js'
+import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript'
+import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
 
-export default tseslint.config(
-    js.configs.recommended,
-
-    ...tseslint.configs.recommended,
-
-    ...pluginVue.configs['flat/essential'],
-
+export default defineConfigWithVueTs(
     {
-        // Áp dụng cho các file cụ thể
-        files: ['**/*.vue', '**/*.ts', '**/*.tsx'],
-        languageOptions: {
-            parserOptions: {
-                parser: tseslint.parser,
-                ecmaVersion: 'latest',
-                sourceType: 'module',
-            },
-        },
+        name: 'app/files-to-ignore',
+        ignores: [
+            '**/dist/**',
+            '**/node_modules/**',
+            '**/coverage/**',
+            '**/.vscode/**',
+            '.tmp/**',
+        ],
+    },
+
+    // Vue recommended rules (flat config)
+    ...pluginVue.configs['flat/recommended'],
+
+    // TypeScript recommended rules
+    vueTsConfigs.recommended,
+
+    // Custom rules
+    {
+        name: 'app/custom-rules',
+        files: ['**/*.{ts,mts,tsx,vue}'],
         rules: {
             'vue/multi-word-component-names': 'off',
+            '@typescript-eslint/no-explicit-any': 'warn',
         },
     },
 
-    {
-        ignores: ['dist/**', 'node_modules/**', '.tmp/**'],
-    }
+    // Disable formatting rules (for Prettier)
+    skipFormatting,
 )
