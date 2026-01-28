@@ -1,17 +1,28 @@
 <script setup lang="ts">
-import { CartItem } from "../../models/cart-item.model";
+import { computed } from "vue";
+import { useCartItem } from "../../composables/useCartItem";
+import type { CartItem } from "../../types/cart.types";
+import type { ProductVariant as ProductVariantType } from "../../types/product.types";
 import {
-  CartItemInfo,
-  ProductVariant,
   CartItemActions,
   CartItemCheckbox,
+  CartItemInfo,
   CartItemPricing,
+  ProductVariant,
 } from "./index";
 
-defineProps<{
+const props = defineProps<{
   item: CartItem;
   selected?: boolean;
-  variantGroups?: { name: string; options: { name: string; value: string; disabled: boolean; active?: boolean }[] }[];
+  variantGroups?: {
+    name: string;
+    options: {
+      name: string;
+      value: string;
+      disabled: boolean;
+      active?: boolean;
+    }[];
+  }[];
 }>();
 
 const emit = defineEmits<{
@@ -20,26 +31,36 @@ const emit = defineEmits<{
   updateQuantity: [cartId: string, quantity: number];
   clickShop: [shopId: string];
   clickProduct: [productId: string];
-  'update:selected': [selected: boolean];
+  "update:selected": [selected: boolean];
+  updateVariant: [cartId: string, variant: ProductVariantType];
 }>();
+
+const { price, isInStock } = useCartItem(computed(() => props.item));
+
+const handleUpdateVariant = (variant: ProductVariantType | undefined) => {
+  if (variant) {
+    emit("updateVariant", props.item.id, variant);
+  }
+};
 </script>
 
 <template>
   <div class="cart-item-row">
     <!-- Checkbox (col-1) -->
     <div class="flex justify-center items-center">
-       <CartItemCheckbox 
-          :is-in-stock="item.isInStock" 
-          :checked="selected"
-          @update:checked="(val) => emit('update:selected', !!val)"
-       />
+      <CartItemCheckbox
+        :is-in-stock="isInStock"
+        :checked="selected"
+        @update:checked="(val) => emit('update:selected', !!val)"
+      />
     </div>
 
     <!-- Product Info (col-2) -->
     <div>
-       <CartItemInfo 
-        :product="item.product" 
-        :shop="item.shop" 
+      <CartItemInfo
+        :product="item.product"
+        :shop="item.shop"
+        :variant-img="item.variant?.image"
         @click-shop="(id) => emit('clickShop', id)"
         @click-product="(id) => emit('clickProduct', id)"
       />
@@ -47,20 +68,21 @@ const emit = defineEmits<{
 
     <!-- Variant (col-3) -->
     <div class="text-sm text-gray-500 flex items-center">
-      <ProductVariant 
-        :definitions="item.product.definitions"
-        :variations="item.product.variations"
-        :is-in-stock="item.isInStock"
+      <ProductVariant
+        :variants="item.product.variants"
+        :selected-variant="item.variant"
+        :is-in-stock="isInStock"
         class="w-full"
+        @confirm="handleUpdateVariant"
       />
     </div>
 
     <!-- Pricing Group (col-4, 5, 6 - via display: contents) -->
-    <CartItemPricing 
-       :unit-price="item.product.price"
-       :quantity="item.quantity"
-       :is-in-stock="item.isInStock"
-       @update:quantity="(val: number) => emit('updateQuantity', item.id, val)"
+    <CartItemPricing
+      :unit-price="price"
+      :quantity="item.quantity"
+      :is-in-stock="isInStock"
+      @update:quantity="(val: number) => emit('updateQuantity', item.id, val)"
     />
 
     <!-- Actions (col-7) -->

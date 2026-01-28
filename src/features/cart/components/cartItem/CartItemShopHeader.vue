@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Shop } from "../../models/shop.model";
+import type { Shop } from "../../types/shop.types";
 import IconShopeeChat from './IconShopeeChat.vue';
 
 defineProps<{ shop: Shop }>();

@@ -1,36 +1,55 @@
 <script lang="ts" setup>
 import { computed } from "vue";
-import type { VariantDefinition, VariantItem } from "../../models/variant.model";
+import type { ProductVariant } from "../../types/product.types";
 import { ChevronDown } from "lucide-vue-next";
 import VariantPopup from "./VariantPopup.vue";
 import { useProductVariant } from "../../composables/useProductVariant";
 
 const props = defineProps<{
-  definitions: VariantDefinition[];
-  variations: VariantItem[];
+  variants: ProductVariant[];
+  selectedVariant?: ProductVariant;
   isInStock?: boolean;
 }>();
 
 const emit = defineEmits<{
-  confirm: [];
+  confirm: [variant: ProductVariant | undefined];
 }>();
+
+const productContext = computed(() => ({
+  variants: props.variants
+}));
+
+const initialSelected = computed(() => props.selectedVariant?.attributes);
 
 const { 
   selectedAttributes, 
-  currentVariantText, 
   popupGroups, 
-  selectOption 
-} = useProductVariant(props);
+  selectOption,
+  currentVariant
+} = useProductVariant(productContext, initialSelected);
+
+const triggerText = computed(() => {
+  if (!props.selectedVariant) return "Chọn Phân Loại";
+  return Object.values(props.selectedVariant.attributes).join(", ");
+});
 
 const handleSelect = (groupName: string, opt: { value: string }) => {
   selectOption(groupName, opt.value);
 };
 
 const handleConfirm = () => {
-    emit('confirm');
+    emit('confirm', currentVariant.value);
 };
 
-const isReadOnly = computed(() => props.definitions.length === 0);
+const handleOpen = () => {
+  if (props.selectedVariant) {
+    selectedAttributes.value = { ...props.selectedVariant.attributes };
+  } else {
+    selectedAttributes.value = {};
+  }
+};
+
+const isReadOnly = computed(() => props.variants.length === 0);
 </script>
 
 <template>
@@ -41,6 +60,7 @@ const isReadOnly = computed(() => props.definitions.length === 0);
       :selected-options="selectedAttributes"
       @confirm="handleConfirm"
       @select="handleSelect"
+      @open="handleOpen"
     >
       <template #trigger="{ isOpen }">
         <div 
@@ -54,7 +74,7 @@ const isReadOnly = computed(() => props.definitions.length === 0);
               :class="{ 'rotate-180': isOpen }"
             />
           </div>
-          <div class="variant-value mt-1">{{ currentVariantText }}</div>
+          <div class="variant-value mt-1">{{ triggerText }}</div>
         </div>
       </template>
     </VariantPopup>
@@ -63,7 +83,7 @@ const isReadOnly = computed(() => props.definitions.length === 0);
         <span class="label-text">Phân Loại:</span>
       </div>
 
-      <div class="variant-value mt-1">{{ currentVariantText }}</div>
+      <div class="variant-value mt-1">{{ triggerText }}</div>
     </div>
   </div>
 </template>
@@ -90,7 +110,7 @@ const isReadOnly = computed(() => props.definitions.length === 0);
 }
 
 .variant-value {
-  @apply font-medium text-gray-700 truncate text-sm;
+  @apply font-medium text-gray-700 text-sm line-clamp-2 leading-tight;
 }
 
 .variant-trigger-readonly {

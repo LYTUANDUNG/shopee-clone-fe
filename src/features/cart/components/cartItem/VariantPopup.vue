@@ -1,26 +1,33 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { Check } from 'lucide-vue-next';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import type { VariantUIGroup, VariantUIOption } from '../../types/variant-ui.types';
+import type { VariantGroup, VariantOption } from '../../types/product.types';
 
 defineProps<{
-  groups: VariantUIGroup[];
-  selectedOptions: Record<string, string>; // Map<GroupName, SelectedValue>
+  groups: VariantGroup[];
+  selectedOptions: Record<string, string>;
 }>();
 
 const emit = defineEmits<{
   confirm: [];
-  select: [groupName: string, option: VariantUIOption];
+  select: [groupName: string, option: VariantOption];
+  open: [];
+  close: [];
 }>();
 
 const isOpen = ref(false);
 
-const handleSelect = (groupName: string, opt: VariantUIOption) => {
+watch(isOpen, (val) => {
+    if (val) emit('open');
+    else emit('close');
+});
+
+const handleSelect = (groupName: string, opt: VariantOption) => {
   if (opt.disabled) return;
   emit('select', groupName, opt);
 };

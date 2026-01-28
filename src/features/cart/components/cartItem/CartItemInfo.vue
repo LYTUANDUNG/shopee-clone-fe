@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { Product } from "../../models/product.model";
-import { Shop } from "../../models/shop.model";
+import type { Product } from "../../types/product.types";
+import type { Shop } from "../../types/shop.types";
 import CartItemShopHeader from "./CartItemShopHeader.vue";
 import CartItemProductDetails from "./CartItemProductDetails.vue";
 
-defineProps<{ product: Product; shop: Shop }>();
+defineProps<{ product: Product; shop: Shop, variantImg: string }>();
 
 const emit = defineEmits<{
   clickShop: [shopId: string];
@@ -20,6 +20,7 @@ const emit = defineEmits<{
     />
     <CartItemProductDetails 
       :product="product" 
+      :variant-img="variantImg"
       @click="(id) => emit('clickProduct', id)"
     />
   </div>

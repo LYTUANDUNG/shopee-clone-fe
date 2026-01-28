@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { Product } from "../../models/product.model";
+import type { Product } from "../../types/product.types";
 
-defineProps<{ product: Product }>();
+defineProps<{ product: Product, variantImg: string }>();
 const emit = defineEmits<{
   click: [productId: string]
 }>();
@@ -9,7 +9,7 @@ const emit = defineEmits<{
 
 <template>
     <div class="product-details cursor-pointer" @click="emit('click', product.id)">
-        <img :src="product.image" :alt="product.name" class="product-image" />
+        <img :src="variantImg" :alt="product.name" class="product-image" />
         <div class="product-meta">
              <div class="product-name">{{ product.name }}</div>
              <img 
