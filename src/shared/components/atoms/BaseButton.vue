@@ -11,23 +11,34 @@
       v-bind="$attrs"
       @click="handleClick"
   >
-    <component :is="leftIcon" v-if="leftIcon" :size="iconSize" class="flex-shrink-0 stroke-current" />
+    <component
+        :is="leftIcon"
+        v-if="leftIcon"
+        :size="iconSize"
+        class="flex-shrink-0 stroke-current"
+    />
 
     <span v-if="label || $slots.default" :class="labelClasses">
       <slot>{{ label }}</slot>
     </span>
 
-    <component :is="rightIcon" v-if="rightIcon" :size="iconSize" class="flex-shrink-0 stroke-current" />
+    <component
+        :is="rightIcon"
+        v-if="rightIcon"
+        :size="iconSize"
+        class="flex-shrink-0 stroke-current"
+    />
   </button>
 </template>
 
 <script setup lang="ts">
 import { computed, useSlots } from 'vue';
+import type { Component } from 'vue';
 
 interface ButtonProps {
   label?: string;
-  leftIcon?: any;
-  rightIcon?: any;
+  leftIcon?: Component | object;
+  rightIcon?: Component | object;
   iconSize?: number;
   bgColor?: string;
   textColor?: string;
@@ -42,7 +53,7 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   bgColor: 'bg-shopee-orange',
   textColor: 'text-white',
   size: 'md',
-  rounded: '',
+  rounded: 'rounded-sm',
   customClasses: ''
 });
 
@@ -64,10 +75,10 @@ const labelClasses = computed(() => ({
 
 const sizeClasses = computed(() => {
   const sizes = {
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-5 py-2.5 text-base',
-    lg: 'px-8 py-3.5 text-lg',
-    xl: 'w-full py-4 text-xl uppercase'
+    sm: 'px-3 py-1.5 text-xs',
+    md: 'px-4 py-2 text-sm',
+    lg: 'px-8 py-3 text-base',
+    xl: 'w-full py-3 text-lg uppercase font-bold'
   };
   return sizes[props.size] || sizes.md;
 });
