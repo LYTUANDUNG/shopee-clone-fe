@@ -1,35 +1,25 @@
-import pluginVue from 'eslint-plugin-vue'
-import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript'
-import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
+import js from '@eslint/js';
+import globals from 'globals';
+import pluginVue from 'eslint-plugin-vue';
+import tseslint from 'typescript-eslint';
+import prettierConfig from 'eslint-config-prettier';
 
-export default defineConfigWithVueTs(
+export default tseslint.config(
     {
-        name: 'app/files-to-ignore',
-        ignores: [
-            '**/dist/**',
-            '**/node_modules/**',
-            '**/coverage/**',
-            '**/.vscode/**',
-            '.tmp/**',
-        ],
+        ignores: ['dist', 'node_modules', 'coverage', '.vscode'],
     },
-
-    // Vue recommended rules (flat config)
+    js.configs.recommended,
+    ...tseslint.configs.recommended,
     ...pluginVue.configs['flat/recommended'],
-
-    // TypeScript recommended rules
-    vueTsConfigs.recommended,
-
-    // Custom rules
+    prettierConfig,
     {
-        name: 'app/custom-rules',
-        files: ['**/*.{ts,mts,tsx,vue}'],
+        files: ['**/*.{ts,vue}'],
+        languageOptions: {
+            ecmaVersion: 2020,
+            globals: globals.browser,
+        },
         rules: {
             'vue/multi-word-component-names': 'off',
-            '@typescript-eslint/no-explicit-any': 'warn',
         },
     },
-
-    // Disable formatting rules (for Prettier)
-    skipFormatting,
-)
+);
