@@ -9,11 +9,13 @@ export interface VoucherCardProps {
   expiryDate: string
   isDisabled?: boolean
   isSaved?: boolean
+  isOutOfStock?: boolean
 }
 
 const props = withDefaults(defineProps<VoucherCardProps>(), {
   isDisabled: false,
-  isSaved: false
+  isSaved: false,
+  isOutOfStock: false
 })
 
 const emit = defineEmits<{
@@ -32,7 +34,7 @@ const buttonText = computed(() => {
 })
 
 const handleClick = () => {
-  if (!isExpired.value) {
+  if (!isExpired.value && !props.isOutOfStock) {
     if (props.isSaved) {
       emit('use', props.code)
     } else {
@@ -43,7 +45,7 @@ const handleClick = () => {
 </script>
 
 <template>
-  <div class="voucher-card" :class="{ 'voucher-card--disabled': isExpired }">
+  <div class="voucher-card" :class="{ 'voucher-card--disabled': isExpired || isOutOfStock }">
     <div class="voucher-card__edge-left"></div>
 
     <div class="voucher-card__content">
@@ -53,8 +55,14 @@ const handleClick = () => {
         <p class="voucher-card__expiry">HSD: {{ expiryDate }}</p>
       </div>
 
+      <div class="voucher-card__separator"></div>
+
       <div class="voucher-card__action">
+        <div v-if="isOutOfStock" class="out-of-stock-badge">
+           <span>Hết lượt sử dụng</span>
+        </div>
         <Button 
+          v-else
           :variant="isSaved ? 'outline' : 'destructive'" 
           :class="{ 'voucher-card__btn-use': isSaved }"
           :disabled="isExpired" 
@@ -71,7 +79,7 @@ const handleClick = () => {
 
 <style scoped>
 .voucher-card {
-  @apply flex items-stretch bg-red-50 rounded overflow-hidden w-[400px];
+  @apply flex items-stretch w-[400px] drop-shadow-sm filter bg-transparent;
 }
 
 .voucher-card--disabled {
@@ -79,19 +87,27 @@ const handleClick = () => {
 }
 
 .voucher-card__edge-left {
-  @apply w-3 flex-shrink-0;
-  background: radial-gradient(circle at left center, transparent 6px, #fef2f2 6px);
-  background-size: 12px 12px;
+  @apply w-3 flex-shrink-0 bg-transparent;
+  background-image: 
+    linear-gradient(to bottom right, transparent 50%, #fff7ed 50%),
+    linear-gradient(to top right, transparent 50%, #fff7ed 50%);
+  background-size: 100% 12px;
+  background-repeat: repeat-y;
+  background-position: left;
 }
 
 .voucher-card__edge-right {
-  @apply w-3 flex-shrink-0;
-  background: radial-gradient(circle at right center, transparent 6px, #fef2f2 6px);
-  background-size: 12px 12px;
+  @apply w-3 flex-shrink-0 bg-transparent;
+  background-image: 
+    linear-gradient(to bottom left, transparent 50%, #fff7ed 50%),
+    linear-gradient(to top left, transparent 50%, #fff7ed 50%);
+  background-size: 100% 12px;
+  background-repeat: repeat-y;
+  background-position: right;
 }
 
 .voucher-card__content {
-  @apply flex-1 flex items-center justify-between p-4 gap-4 min-w-0;
+  @apply flex-1 flex items-center justify-between p-4 gap-4 min-w-0 bg-orange-50;
 }
 
 .voucher-card__info {
@@ -99,22 +115,30 @@ const handleClick = () => {
 }
 
 .voucher-card__title {
-  @apply text-lg font-semibold text-red-600 m-0 mb-1 truncate;
+  @apply text-lg font-semibold text-orange-600 m-0 mb-1 truncate;
 }
 
 .voucher-card__description {
-  @apply text-sm text-red-600 m-0 mb-1 truncate;
+  @apply text-sm text-orange-600 m-0 mb-1 truncate;
 }
 
 .voucher-card__expiry {
   @apply text-xs text-gray-500 m-0;
 }
 
+.voucher-card__separator {
+  @apply w-[1px] self-stretch border-l border-dashed border-gray-300 mx-2;
+}
+
 .voucher-card__action {
-  @apply flex-shrink-0 ml-auto;
+  @apply flex-shrink-0 ml-auto w-[100px] flex justify-center;
 }
 
 .voucher-card__btn-use {
-  @apply border-red-500 text-red-500 bg-transparent hover:bg-transparent hover:text-red-500 focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:outline-none;
+  @apply border-orange-500 text-orange-500 bg-transparent hover:bg-transparent hover:text-orange-500 focus:outline-none focus:ring-0 focus-visible:ring-0 focus-visible:outline-none;
+}
+
+.out-of-stock-badge {
+  @apply bg-gray-400 text-white text-xs text-center px-1 py-1 rounded w-full h-full flex items-center justify-center leading-tight;
 }
 </style>
