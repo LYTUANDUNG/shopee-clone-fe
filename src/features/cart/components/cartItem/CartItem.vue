@@ -15,6 +15,15 @@ const props = defineProps<{
   item: CartItem;
   selected?: boolean;
 }>();
+// Emit các sự kiện lên cha để xử lý logic nghiệp vụ
+// "remove": Xóa sản phẩm khỏi giỏ hàng
+// "findSimilar": Tìm sản phẩm tương tự
+// "updateQuantity": Cập nhật số lượng sản phẩm
+// "clickShop": Click vào tên shop (đến trang shop)
+// "clickProduct": Click vào tên/ảnh sản phẩm (đến trang chi tiết)
+// "chat": Click vào icon chat
+// "select": Check/Uncheck sản phẩm
+// "updateVariant": Thay đổi phân loại (Màu sắc, kích cỡ...)
 
 const emit = defineEmits<{
   remove: [cartId: string];
@@ -38,7 +47,7 @@ const handleUpdateVariant = (variant: ProductVariantType | undefined) => {
 
 <template>
   <div class="cart-item-row">
-    <!-- Checkbox (col-1) -->
+    <!-- Cột 1: Checkbox chọn sản phẩm -->
     <div class="flex justify-center items-center">
       <CartItemCheckbox
         :is-in-stock="isInStock"
@@ -47,7 +56,7 @@ const handleUpdateVariant = (variant: ProductVariantType | undefined) => {
       />
     </div>
 
-    <!-- Product Info (col-2) -->
+    <!-- Cột 2: Thông tin sản phẩm và Shop -->
     <div>
       <CartItemInfo
         :product="item.product"
@@ -59,7 +68,7 @@ const handleUpdateVariant = (variant: ProductVariantType | undefined) => {
       />
     </div>
 
-    <!-- Variant (col-3) -->
+    <!-- Cột 3: Phân loại hàng (Variant) -->
     <div class="text-sm text-gray-500 flex items-center">
       <ProductVariant
         :variants="item.product.variants"
@@ -70,15 +79,16 @@ const handleUpdateVariant = (variant: ProductVariantType | undefined) => {
       />
     </div>
 
-    <!-- Pricing Group (col-4, 5, 6 - via display: contents) -->
+    <!-- Cột 4, 5, 6: Đơn giá, Số lượng, Thành tiền (Hiển thị dạng contents để ăn theo Grid cha) -->
     <CartItemPricing
       :unit-price="price"
       :quantity="item.quantity"
       :is-in-stock="isInStock"
+      :max-quantity="item.variant?.stock"
       @update:quantity="(val: number) => emit('updateQuantity', item.id, val)"
     />
 
-    <!-- Actions (col-7) -->
+    <!-- Cột 7: Các hành động (Xóa, Tìm tương tự) -->
     <div class="flex justify-center items-center">
       <CartItemActions
         @remove="emit('remove', item.id)"
@@ -91,6 +101,6 @@ const handleUpdateVariant = (variant: ProductVariantType | undefined) => {
 <style scoped>
 .cart-item-row {
   @apply grid gap-4 items-center py-4 px-4 bg-white border-b border-gray-100 last:border-none;
-  grid-template-columns: 50px 4fr 1.5fr 1fr 1fr 1fr 100px;
+  grid-template-columns: 50px minmax(200px, 4fr) 1.5fr 120px 120px 120px 100px;
 }
 </style>

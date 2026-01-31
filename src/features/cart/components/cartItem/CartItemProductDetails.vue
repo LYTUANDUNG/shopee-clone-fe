@@ -18,6 +18,7 @@ const emit = defineEmits<{
                class="voucher-icon" 
                alt="voucher" 
              />
+             <!-- TODO: Sẽ thay thế bằng component Image xử lý error sau -->
         </div>
     </div>
 </template>

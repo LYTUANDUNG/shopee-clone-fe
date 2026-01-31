@@ -8,10 +8,10 @@ const emit = defineEmits<{
 </script>
 <template>
   <div class="flex flex-col items-center gap-2">
-    <button class="action-btn text-black hover:text-[#ee4d2d]" @click="emit('remove')">
+    <button class="action-btn text-black hover:text-[#ee4d2d]" aria-label="Xóa sản phẩm" title="Xóa" @click="emit('remove')">
       Xóa
     </button>
-    <button class="action-btn text-[#ee4d2d] flex items-center gap-0.5" @click="emit('findSimilar')">
+    <button class="action-btn text-[#ee4d2d] flex items-center gap-0.5" aria-label="Tìm sản phẩm tương tự" title="Tìm tương tự" @click="emit('findSimilar')" >
       <span class="pl-[24px]">Tìm sản phẩm tương tự</span>
       <ChevronDown :size="26" />
     </button>

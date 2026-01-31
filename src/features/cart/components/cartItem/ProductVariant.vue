@@ -21,6 +21,7 @@ const productContext = computed(() => ({
 
 const initialSelected = computed(() => props.selectedVariant?.attributes);
 
+// Sử dụng composable để quản lý logic chọn phân loại
 const { 
   selectedAttributes, 
   popupGroups, 
@@ -28,6 +29,7 @@ const {
   currentVariant
 } = useProductVariant(productContext, initialSelected);
 
+// Text hiển thị trên nút chọn (ví dụ: "Size: M, Màu: Đỏ")
 const triggerText = computed(() => {
   if (!props.selectedVariant) return "Chọn Phân Loại";
   return Object.values(props.selectedVariant.attributes).join(", ");
@@ -37,10 +39,12 @@ const handleSelect = (groupName: string, opt: { value: string }) => {
   selectOption(groupName, opt.value);
 };
 
+// Xác nhận chọn biến thể mới
 const handleConfirm = () => {
     emit('confirm', currentVariant.value);
 };
 
+// Mở popup: reset lại state chọn dựa trên variant hiện tại
 const handleOpen = () => {
   if (props.selectedVariant) {
     selectedAttributes.value = { ...props.selectedVariant.attributes };

@@ -6,29 +6,32 @@ import CartItemQuantity from "./CartItemQuantity.vue";
 const props = defineProps<{
   unitPrice: number;
   isInStock: boolean;
+  maxQuantity?: number; // Số lượng tồn kho tối đa
 }>();
 
 const quantity = defineModel<number>('quantity', { required: true });
 
+// Tính thành tiền = Đơn giá * Số lượng
 const totalPrice = computed(() => props.unitPrice * quantity.value);
 </script>
 
 <template>
   <div class="pricing-grid">
-    <!-- Unit Price -->
+    <!-- Cột: Đơn giá -->
     <div class="col-unit-price">
       <ItemPrice :price="unitPrice" color="text-gray-800" />
     </div>
 
-    <!-- Quantity -->
+    <!-- Cột: Số lượng -->
     <div class="col-quantity">
       <CartItemQuantity
         v-model:quantity="quantity"
         :disabled="!isInStock"
+        :max="maxQuantity"
       />
     </div>
 
-    <!-- Total Price -->
+    <!-- Cột: Thành tiền -->
     <div class="col-total-price">
       <ItemPrice :price="totalPrice" color="text-orange-500" />
     </div>

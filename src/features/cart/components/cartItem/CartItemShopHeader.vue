@@ -10,10 +10,11 @@ const emit = defineEmits<{
 </script>
 
 <template>
+    <!-- Chỉ hiển thị Header nếu Shop là Official (Mall) -->
     <div v-if="shop.isOfficial" class="shop-header cursor-pointer" @click="emit('click', shop.id)">
        <div class="mall-badge">Mall</div>
        <span class="shop-name">{{ shop.name }}</span>
-       <div class="chat-icon-wrapper" @click.stop="emit('chat', shop.id)">
+       <div class="chat-icon-wrapper" aria-label="Chat với Shop" @click.stop="emit('chat', shop.id)" >
           <IconShopeeChat class="chat-icon" style="font-size: 20px;" />
        </div>
     </div>

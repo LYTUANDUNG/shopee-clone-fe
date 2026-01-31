@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { Check } from 'lucide-vue-next';
 import {
   Popover,
@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/popover';
 import type { VariantGroup, VariantOption } from '../../types/product.types';
 
-defineProps<{
+const props= defineProps<{
   groups: VariantGroup[];
   selectedOptions: Record<string, string>;
 }>();
@@ -27,12 +27,19 @@ watch(isOpen, (val) => {
     else emit('close');
 });
 
+// Chọn option trong nhóm
 const handleSelect = (groupName: string, opt: VariantOption) => {
   if (opt.disabled) return;
   emit('select', groupName, opt);
 };
 
+const isComplete = computed(() => {
+    return props.groups.every(group => props.selectedOptions[group.name]);
+});
+
+// Xác nhận thay đổi
 const handleConfirm = () => {
+  if (!isComplete.value) return;
   emit('confirm');
   isOpen.value = false;
 };
@@ -74,7 +81,13 @@ const handleConfirm = () => {
 
         <div class="flex justify-end gap-2 mt-4 pt-4 border-t border-gray-50">
           <button class="btn-cancel" @click="isOpen = false">TRỞ LẠI</button>
-          <button class="btn-confirm" @click="handleConfirm">XÁC NHẬN</button>
+          <button 
+             class="btn-confirm" 
+             :disabled="!isComplete"
+             @click="handleConfirm"
+          >
+             XÁC NHẬN
+          </button>
         </div>
       </div>
     </PopoverContent>
@@ -104,7 +117,7 @@ const handleConfirm = () => {
 }
 
 .btn-confirm {
-  @apply px-4 py-2 text-sm text-white bg-orange-500 hover:bg-orange-600 rounded-sm uppercase transition-colors;
+  @apply px-4 py-2 text-sm text-white bg-orange-500 hover:bg-orange-600 rounded-sm uppercase transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
 }
 
 .popup-arrow {

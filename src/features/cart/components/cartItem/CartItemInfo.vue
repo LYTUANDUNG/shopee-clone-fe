@@ -6,6 +6,7 @@ import CartItemProductDetails from "./CartItemProductDetails.vue";
 
 defineProps<{ product: Product; shop: Shop, variantImg: string }>();
 
+// Sự kiện click vào shop, sản phẩm hoặc chat
 const emit = defineEmits<{
   clickShop: [shopId: string];
   clickProduct: [productId: string];
