@@ -25,9 +25,16 @@ export default tseslint.config(
         languageOptions: {
             ecmaVersion: 2020,
             globals: globals.browser,
+            parser: pluginVue.parser,
+            parserOptions: {
+                parser: tseslint.parser,
+                sourceType: 'module',
+                extraFileExtensions: ['.vue'],
+            },
         },
         rules: {
             'vue/multi-word-component-names': 'off',
+            '@typescript-eslint/no-explicit-any': 'warn',
         },
     },
 );
