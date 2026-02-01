@@ -13,6 +13,14 @@ export default tseslint.config(
     ...pluginVue.configs['flat/recommended'],
     prettierConfig,
     {
+        files: ['**/*.vue'],
+        languageOptions: {
+            parserOptions: {
+                parser: tseslint.parser,
+            },
+        },
+    },
+    {
         files: ['**/*.{ts,vue}'],
         languageOptions: {
             ecmaVersion: 2020,
