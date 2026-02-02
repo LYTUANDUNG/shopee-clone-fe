@@ -15,6 +15,7 @@ export default {
         sm: 'calc(var(--radius) - 4px)'
       },
       colors: {
+        // Màu shopee
         'shopee-orange': '#ee4d2d',
         'shopee-gray': '#dbdbdb',
         background: 'hsl(var(--background))',
