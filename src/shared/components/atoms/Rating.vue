@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-// 1. Naming: Constants tuân thủ SCREAMING_SNAKE_CASE
+
 const MAX_STARS = 5;
-const DEFAULT_COLOR = '#ee4d2d'; // Màu cam Shopee (từ image_263afb.png)
-const EMPTY_COLOR = '#dbdbdb';   // Màu xám sao trống
 
 interface Props {
   rating?: number;
@@ -51,8 +49,8 @@ const starStyle = computed(() => ({
       <!-- Background Star (Empty) -->
       <svg 
         viewBox="0 0 15 15" 
-        class="absolute inset-0 w-full h-full"
-        :fill="EMPTY_COLOR"
+        class="absolute inset-0 w-full h-full text-shopee-gray"
+        fill="currentColor"
       >
         <path :d="STAR_PATH" />
       </svg>
@@ -64,8 +62,8 @@ const starStyle = computed(() => ({
       >
         <svg 
           viewBox="0 0 15 15" 
-          class="w-full h-full"
-          :fill="DEFAULT_COLOR"
+          class="w-full h-full text-shopee-orange"
+          fill="currentColor"
           :style="starStyle"
         >
           <path :d="STAR_PATH" />
