@@ -4,7 +4,6 @@ import AuthLayout from '../layouts/AuthLayout.vue';
 import BaseInput from '@/shared/components/atoms/BaseInput.vue';
 import BaseButton from '@/shared/components/atoms/BaseButton.vue';
 
-// Khởi tạo các biến ref trống hoàn toàn
 const username = ref('');
 const password = ref('');
 
