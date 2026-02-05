@@ -37,7 +37,7 @@ const handleLogin = () => {
           </div>
         </div>
 
-        <form @submit.prevent="handleLogin" class="space-y-4">
+        <form class="space-y-4" @submit.prevent="handleLogin">
           <BaseInput v-model="username" placeholder="Email/Số điện thoại/Tên đăng nhập" />
           <BaseInput v-model="password" type="password" placeholder="Mật khẩu" />
 
