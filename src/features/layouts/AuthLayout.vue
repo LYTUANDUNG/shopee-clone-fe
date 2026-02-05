@@ -26,9 +26,7 @@ import ShopeeLogoWithTitle from '@/shared/components/atoms/ShopeeLogoWithTitle.v
       </div>
     </main>
 
-    <footer class="bg-[#f5f5f5] py-16 text-center text-xs text-gray-500 uppercase">
-      © 2026 Shopee Clone. Project by Hùng.
-    </footer>
+
   </div>
 </template>
 
