@@ -1,20 +1,19 @@
-//{
-//  "files": [],
-//  "references": [
-//    { "path": "./tsconfig.app.json" },
-//    { "path": "./tsconfig.node.json" }
-//  ]
-//}
 {
-  "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
   "compilerOptions": {
-    "composite": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    },
-
-    "types": ["vite/client"]
-  }
+    }
+  },
+  "files": [],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
 }

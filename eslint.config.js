@@ -13,13 +13,28 @@ export default tseslint.config(
     ...pluginVue.configs['flat/recommended'],
     prettierConfig,
     {
+        files: ['**/*.vue'],
+        languageOptions: {
+            parserOptions: {
+                parser: tseslint.parser,
+            },
+        },
+    },
+    {
         files: ['**/*.{ts,vue}'],
         languageOptions: {
             ecmaVersion: 2020,
             globals: globals.browser,
+            parser: pluginVue.parser,
+            parserOptions: {
+                parser: tseslint.parser,
+                sourceType: 'module',
+                extraFileExtensions: ['.vue'],
+            },
         },
         rules: {
             'vue/multi-word-component-names': 'off',
+            '@typescript-eslint/no-explicit-any': 'warn',
         },
     },
 );
