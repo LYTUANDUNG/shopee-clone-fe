@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import BaseButton from "@/shared/components/atoms/BaseButton.vue";
 
 const minPrice = ref<string>("");
 const maxPrice = ref<string>("");
@@ -32,7 +33,14 @@ const applyPriceFilter = () => {
         class="price-input"
       />
     </div>
-    <button class="apply-button" @click="applyPriceFilter">Áp dụng</button>
+    <BaseButton 
+      label="Áp dụng" 
+      bg-color="bg-[#ee4d2d]" 
+      text-color="text-white" 
+      size="sm" 
+      class="w-full uppercase"
+      @click="applyPriceFilter"
+    />
   </div>
 </template>
 
@@ -51,9 +59,5 @@ const applyPriceFilter = () => {
 
 .range-separator {
   @apply text-gray-400;
-}
-
-.apply-button {
-  @apply w-full bg-[#ee4d2d] text-white text-xs font-medium py-1.5 rounded-sm uppercase hover:opacity-90 transition-opacity;
 }
 </style>

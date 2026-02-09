@@ -1,6 +1,6 @@
 import { ref } from 'vue';
-import { SORT_OPTIONS } from '../constants/sortOptions';
-import type { Product, FilterState, SortOption } from '../types';
+import { SORT_OPTIONS } from '@/features/product/constants/sortOptions';
+import type { Product, FilterState, SortOption } from '@/features/product/types';
 
 export const useProductList = () => {
     const products = ref<Product[]>([]);
@@ -11,23 +11,29 @@ export const useProductList = () => {
         locations: [],
         categories: [],
         priceRange: { min: null, max: null },
-        shipping: []
+        shipping: [],
+        brands: [],
+        shopTypes: [],
+        conditions: [],
+        paymentOptions: [],
+        rating: null,
+        services: []
     });
 
     const sortBy = ref<SortOption>('relevance');
 
 
+
     // Phân trang
     const currentPage = ref(1);
-    const totalPages = ref(17);
+    const limit = ref(20);
+    const totalItems = ref(0);
+    const totalPages = ref(0);
 
     const handleFilterChange = <K extends keyof FilterState>(filterType: K, value: FilterState[K]) => {
-
-
         // Logic giả lập (thay thế bằng API call thực tế)
         console.log('Filter changed:', filterType, value);
         
-
         filters.value[filterType] = value;
 
         currentPage.value = 1;
@@ -44,7 +50,6 @@ export const useProductList = () => {
         if (currentPage.value < totalPages.value) {
             currentPage.value++;
             console.log('Next page:', currentPage.value);
-
         }
     };
 
@@ -52,7 +57,15 @@ export const useProductList = () => {
         if (currentPage.value > 1) {
             currentPage.value--;
             console.log('Prev page:', currentPage.value);
+        }
+    };
 
+    const goToPage = (page: number) => {
+        if (page >= 1 && page <= totalPages.value) {
+            currentPage.value = page;
+            console.log('Go to page:', page);
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     };
 
@@ -66,6 +79,9 @@ export const useProductList = () => {
         handleFilterChange,
         handleSortChange,
         nextPage,
-        prevPage
+        prevPage,
+        goToPage,
+        limit,
+        totalItems
     };
 };

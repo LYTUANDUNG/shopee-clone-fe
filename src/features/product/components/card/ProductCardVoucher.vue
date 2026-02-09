@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Voucher } from "../../types";
+import type { Voucher } from "@/features/product/types";
 import VoucherBadge from "./VoucherBadge.vue";
 
 defineProps<{

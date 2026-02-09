@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { SortOption } from '../../types';
+import type { SortOption } from '@/features/product/types';
+import BaseButton from '@/shared/components/atoms/BaseButton.vue';
 
 defineProps<{
   sortBy: string;
@@ -16,27 +17,28 @@ const handleSortChange = (value: SortOption) => {
 </script>
 
 <template>
-    <button 
+    <BaseButton 
         v-for="option in sortOptions.filter(opt => !opt.value.includes('price'))"
         :key="option.value"
+        :label="option.label"
+        :bg-color="sortBy === option.value ? 'bg-[#ee4d2d]' : 'bg-white'"
+        :text-color="sortBy === option.value ? 'text-white' : 'text-black'"
         class="sort-button"
         :class="sortBy === option.value ? 'active' : 'inactive'"
         @click="handleSortChange(option.value)"
-    >
-        {{ option.label }}
-    </button>
+    />
 </template>
 
 <style scoped>
 .sort-button {
-    @apply px-4 py-2 rounded-sm capitalize outline-none;
+    @apply capitalize outline-none transition-colors;
 }
 
 .sort-button.active {
-    @apply bg-[#ee4d2d] text-white hover:bg-[#d73211];
+    @apply hover:bg-[#d73211];
 }
 
 .sort-button.inactive {
-    @apply bg-white text-black hover:bg-[rgba(0,0,0,0.02)];
+    @apply hover:bg-[rgba(0,0,0,0.02)];
 }
 </style>

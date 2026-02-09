@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { Product } from '../types';
-import ProductCardImage from './card/ProductCardImage.vue';
-import ProductCardInfo from './card/ProductCardInfo.vue';
+import type { Product } from '@/features/product/types';
+import {ProductCardImage, ProductCardInfo} from '@/features/product/components/card';
+import BaseButton from '@/shared/components/atoms/BaseButton.vue';
 
 defineProps<{
   product: Product
@@ -18,9 +18,13 @@ const emit = defineEmits<{
         <ProductCardImage :product="product" />
         <ProductCardInfo :product="product" />
 
-        <div class="find-similar-btn" @click.stop="emit('find-similar-products', product.id)">
-            Tìm sản phẩm tương tự
-        </div>
+        <BaseButton
+            label="Tìm sản phẩm tương tự"
+            bg-color="bg-[#ee4d2d]"
+            text-color="text-white"
+            class="find-similar-btn"
+            @click.stop="emit('find-similar-products', product.id)"
+        />
     </div>
 </template>
 
@@ -30,6 +34,6 @@ const emit = defineEmits<{
 }
 
 .find-similar-btn {
-    @apply hidden group-hover:flex absolute bottom-0 left-0 w-full bg-[#ee4d2d] text-white text-sm font-medium items-center justify-center py-2 translate-y-[100%] z-20 shadow-md;
+    @apply hidden group-hover:flex absolute bottom-0 left-0 w-full text-sm font-medium items-center justify-center py-2 translate-y-[100%] z-20 shadow-md rounded-none;
 }
 </style>

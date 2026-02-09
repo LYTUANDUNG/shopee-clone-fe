@@ -1,39 +1,49 @@
 <script setup lang="ts">
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next';
+import BaseButton from '@/shared/components/atoms/BaseButton.vue';
 
-defineProps<{
+const props = defineProps<{
   currentPage: number;
   totalPages: number;
 }>();
 
 const emit = defineEmits<{
-  (e: 'page-change', direction: 'next' | 'prev'): void;
+  (e: 'page-change', page: number): void;
 }>();
 
-const nextPage = () => emit('page-change', 'next');
-const prevPage = () => emit('page-change', 'prev');
+const nextPage = () => {
+    if (props.currentPage < props.totalPages) {
+        emit('page-change', props.currentPage + 1);
+    }
+};
+
+const prevPage = () => {
+    if (props.currentPage > 1) {
+        emit('page-change', props.currentPage - 1);
+    }
+};
 </script>
 
 <template>
     <div class="pagination-controls">
         <span class="pagination-text"><span class="text-[#ee4d2d]">{{ currentPage }}</span>/{{ totalPages }}</span>
         <div class="pagination-buttons">
-            <button 
+            <BaseButton 
                 class="nav-button" 
                 :class="{ 'disabled': currentPage === 1, 'active': currentPage > 1 }"
                 :disabled="currentPage === 1"
                 @click="prevPage"
             >
                 <ChevronLeft class="w-3 h-3" />
-            </button>
-            <button 
+            </BaseButton>
+            <BaseButton 
                 class="nav-button" 
                 :class="{ 'disabled': currentPage === totalPages, 'active': currentPage < totalPages }"
                 :disabled="currentPage === totalPages"
                 @click="nextPage"
             >
                 <ChevronRight class="w-3 h-3" />
-            </button>
+            </BaseButton>
         </div>
     </div>
 </template>
@@ -53,11 +63,11 @@ const prevPage = () => emit('page-change', 'prev');
 }
 
 .nav-button {
-    @apply w-9 h-9 border border-gray-200 flex items-center justify-center;
+    @apply w-9 h-9 border border-gray-200 p-0 rounded-none;
 }
 
 .nav-button.disabled {
-    @apply bg-white/60 text-gray-300 cursor-not-allowed;
+    @apply bg-white/60 text-gray-300 cursor-not-allowed border-gray-100;
 }
 
 .nav-button.active {

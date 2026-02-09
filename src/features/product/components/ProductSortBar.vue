@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { SortOption } from '../types';
-import { SortOptions, SortPriceDropdown, SortMiniPagination } from './sort';
+import type { SortOption } from '@/features/product/types';
+import { SortOptions, SortPriceDropdown, SortMiniPagination } from '@/features/product/components/sort';
 
 defineProps<{
   sortBy: string;
@@ -11,11 +11,11 @@ defineProps<{
 
 const emit = defineEmits<{
   (e: 'sort-change', value: SortOption): void;
-  (e: 'page-change', direction: 'next' | 'prev'): void;
+  (e: 'page-change', page: number): void;
 }>();
 
 const onSortChange = (value: SortOption) => emit('sort-change', value);
-const onPageChange = (direction: 'next' | 'prev') => emit('page-change', direction);
+const onPageChange = (page: number) => emit('page-change', page);
 </script>
 
 <template>

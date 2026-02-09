@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { Product } from "../../types";
+import type { Product } from "@/features/product/types";
 import {
   ProductCardTitle,
   ProductCardPrice,
   ProductCardRatingSold,
   ProductCardLocation,
-  ProductCardVoucher
-} from "./index";
+  ProductCardVoucher,
+} from "@/features/product/components/card";
 
 defineProps<{
   product: Product;

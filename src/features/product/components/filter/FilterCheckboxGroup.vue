@@ -1,12 +1,26 @@
 <script setup lang="ts">
-import { Check } from "lucide-vue-next";
+import { ref, computed } from 'vue';
+import { Check, ChevronDown, ChevronUp } from "lucide-vue-next";
 
-defineProps<{
+const props = withDefaults(defineProps<{
   title: string;
   items: string[];
-}>();
+  maxVisible?: number;
+}>(), {
+  maxVisible: 4
+});
 
 const model = defineModel<string[]>({ required: true });
+const isExpanded = ref(false);
+
+const displayedItems = computed(() => {
+  if (isExpanded.value) return props.items;
+  return props.items.slice(0, props.maxVisible);
+});
+
+const toggleExpand = () => {
+  isExpanded.value = !isExpanded.value;
+};
 
 const onChange = (item: string, event: Event) => {
   const isChecked = (event.target as HTMLInputElement).checked;
@@ -29,7 +43,7 @@ const onChange = (item: string, event: Event) => {
   <div>
     <h3 class="filter-header">{{ title }}</h3>
     <div class="filter-content">
-      <label v-for="item in items" :key="item" class="checkbox-label group">
+      <label v-for="item in displayedItems" :key="item" class="checkbox-label group">
         <div class="checkbox-container">
           <input
             type="checkbox"
@@ -48,6 +62,21 @@ const onChange = (item: string, event: Event) => {
         </div>
         <span>{{ item }}</span>
       </label>
+
+      <!-- Toggle Button -->
+      <div 
+        v-if="items.length > maxVisible" 
+        class="more-items-link" 
+        @click="toggleExpand"
+      >
+        <template v-if="!isExpanded">
+          Thêm <ChevronDown class="w-3 h-3" />
+        </template>
+        <template v-else>
+          Thu Gọn <ChevronUp class="w-3 h-3" />
+        </template>
+      </div>
+
       <slot name="more"></slot>
     </div>
   </div>
@@ -80,5 +109,9 @@ const onChange = (item: string, event: Event) => {
 
 .checkbox-icon {
   @apply w-3 h-3 text-white;
+}
+
+.more-items-link {
+  @apply flex items-center gap-2 text-sm cursor-pointer pl-6 text-gray-500 hover:text-[#ee4d2d] mt-1;
 }
 </style>

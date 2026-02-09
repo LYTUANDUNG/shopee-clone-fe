@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Star } from "lucide-vue-next";
-import { formatSold } from "../../../../shared/utils/format";
+import Rating from '@/shared/components/atoms/Rating.vue';
+import { formatSold } from "@/shared/utils/format";
 
 defineProps<{
   rating: number;
@@ -11,8 +11,8 @@ defineProps<{
 <template>
   <div class="rating-sold-section">
     <div class="star-wrapper">
-      <Star class="w-2.5 h-2.5 fill-current" />
-      <span class="ml-0.5">{{ rating.toFixed(1) }}</span>
+      <Rating :rating="rating" :size="10" />
+      <span class="ml-1">{{ rating.toFixed(1) }}</span>
     </div>
     <div class="separator">|</div>
     <div class="sold-text">Đã bán {{ formatSold(sold) }}</div>
@@ -25,7 +25,7 @@ defineProps<{
 }
 
 .star-wrapper {
-  @apply flex text-[#ffce3d] text-[10px] items-center;
+  @apply flex items-center;
 }
 
 .star-wrapper span {

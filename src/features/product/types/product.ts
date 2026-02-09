@@ -29,6 +29,12 @@ export interface FilterState {
         max: number | null;
     };
     shipping: string[];
+    brands: string[];
+    shopTypes: string[];
+    conditions: string[];
+    paymentOptions: string[];
+    rating: number | null;
+    services: string[];
 }
 
 export type SortOption = 'relevance' | 'newest' | 'sales' | 'price-asc' | 'price-desc';
