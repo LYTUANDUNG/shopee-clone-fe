@@ -8,7 +8,8 @@ import ProductSortBar from '../components/ProductSortBar.vue';
 import { useProductList } from '../composables/useProductList';
 import type { FilterState, SortOption } from '../types';
 
-// Core Composables
+
+// Composables chính
 const route = useRoute();
 const { 
     products, 
@@ -23,15 +24,17 @@ const {
     prevPage 
 } = useProductList();
 
-// Computed Properties
+
+// Các thuộc tính tính toán (Computed)
 const keyword = computed(() => {
     const q = route.query.keyword || route.query.q;
     return q ? String(q) : 'áo thun';
 });
 
-// Event Handlers
+
+// Xử lý sự kiện (Event Handlers)
 const onFilterUpdate = (type: string, value: FilterState[keyof FilterState]) => {
-    // Basic validation to ensure type is a valid key of FilterState
+
     if (['locations', 'categories', 'priceRange', 'shipping'].includes(type)) {
         handleFilterChange(type as keyof FilterState, value);
     }
@@ -50,7 +53,8 @@ const onPageChange = (direction: 'next' | 'prev') => {
 <template>
     <div class="page-container">
         <div class="content-wrapper">
-            <!-- Sidebar -->
+
+            <!-- Sidebar bên trái -->
             <aside class="sidebar-wrapper">
                 <ProductFilterSidebar 
                     :filters="filters"
@@ -58,7 +62,8 @@ const onPageChange = (direction: 'next' | 'prev') => {
                 />
             </aside>
 
-            <!-- Main Content -->
+
+            <!-- Nội dung chính -->
             <main class="main-content">
                 <ProductListHeader :keyword="keyword" />
 
@@ -71,7 +76,8 @@ const onPageChange = (direction: 'next' | 'prev') => {
                     @page-change="onPageChange"
                 />
 
-                <!-- Product Grid -->
+
+                <!-- Lưới sản phẩm -->
                 <div class="product-grid">
                     <ProductCard 
                         v-for="product in products" 
@@ -101,7 +107,7 @@ const onPageChange = (direction: 'next' | 'prev') => {
     @apply flex-1 w-0;
 }
 
-/* Grid */
+
 .product-grid {
     @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3;
 }

@@ -1,17 +1,11 @@
 <script setup lang="ts">
 import { Star } from "lucide-vue-next";
+import { formatSold } from "../../../../shared/utils/format";
 
 defineProps<{
   rating: number;
   sold: number;
 }>();
-
-const formatSold = (num: number) => {
-    if (num >= 1000) {
-        return (num / 1000).toFixed(1).replace('.0', '') + 'k';
-    }
-    return num.toString();
-};
 </script>
 
 <template>

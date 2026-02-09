@@ -4,7 +4,7 @@ import type { FilterState } from '../types';
 export const useProductFilter = (
     currentFilters: FilterState, 
     emit: {
-        (e: 'filter-change', type: keyof FilterState, value: any): void;
+        (e: 'filter-change', type: keyof FilterState, value: FilterState[keyof FilterState]): void;
         (e: 'load-more-locations'): void;
     }
 ) => {
@@ -36,17 +36,20 @@ export const useProductFilter = (
     };
 
     return {
-      // Options
+
+      // Các tùy chọn (Options)
       locations: locationOptions,
       categories: categoryOptions,
       shippingOptions: shippingOptions,
 
-      // State
+
+      // Trạng thái (State)
       selectedLocations,
       selectedCategories,
       selectedShipping,
 
-      // Actions
+
+      // Hành động (Actions)
       onLocationChange,
       onCategoryChange,
       onShippingChange,

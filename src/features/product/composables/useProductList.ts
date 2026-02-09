@@ -5,7 +5,8 @@ import type { Product, FilterState, SortOption } from '../types';
 export const useProductList = () => {
     const products = ref<Product[]>([]);
     
-    // Initial Filter State
+
+    // Trạng thái bộ lọc ban đầu
     const filters = ref<FilterState>({
         locations: [],
         categories: [],
@@ -15,25 +16,27 @@ export const useProductList = () => {
 
     const sortBy = ref<SortOption>('relevance');
 
-    // Pagination
+
+    // Phân trang
     const currentPage = ref(1);
-    const totalPages = ref(17); // Mock total pages
+    const totalPages = ref(17);
 
     const handleFilterChange = <K extends keyof FilterState>(filterType: K, value: FilterState[K]) => {
-        // Mock logic for now
-        // In a real app, you would probably update the filters state and trigger a fetch
+
+
+        // Logic giả lập (thay thế bằng API call thực tế)
         console.log('Filter changed:', filterType, value);
         
-        // Update local state safely
+
         filters.value[filterType] = value;
-        // Reset page on filter change
+
         currentPage.value = 1;
     };
 
     const handleSortChange = (newSort: SortOption) => {
         sortBy.value = newSort;
         console.log('Sort changed:', newSort);
-        // Trigger fetch or sort logic here
+
         currentPage.value = 1;
     };
 
@@ -41,7 +44,7 @@ export const useProductList = () => {
         if (currentPage.value < totalPages.value) {
             currentPage.value++;
             console.log('Next page:', currentPage.value);
-            // Trigger fetch
+
         }
     };
 
@@ -49,7 +52,7 @@ export const useProductList = () => {
         if (currentPage.value > 1) {
             currentPage.value--;
             console.log('Prev page:', currentPage.value);
-            // Trigger fetch
+
         }
     };
 

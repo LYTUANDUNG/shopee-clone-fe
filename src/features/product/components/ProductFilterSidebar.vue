@@ -11,7 +11,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: 'filter-change', type: keyof FilterState, value: any): void;
+  (e: 'filter-change', type: keyof FilterState, value: FilterState[keyof FilterState]): void;
   (e: 'load-more-locations'): void;
 }>();
 
@@ -32,13 +32,14 @@ const {
 
 <template>
     <div class="sidebar-container">
+
         <!-- Header -->
         <div class="header-container">
             <Filter class="header-icon" />
             <h2 class="header-title">Bộ lọc tìm kiếm</h2>
         </div>
 
-        <!-- Filter Group: Location -->
+        <!-- Bộ lọc: Nơi bán -->
         <FilterCheckboxGroup 
             v-model="selectedLocations"
             title="Nơi Bán" 
@@ -52,7 +53,7 @@ const {
              </template>
         </FilterCheckboxGroup>
 
-        <!-- Filter Group: Category -->
+        <!-- Bộ lọc: Danh mục -->
         <FilterCheckboxGroup 
             v-model="selectedCategories"
             title="Theo Danh Mục" 
@@ -60,10 +61,10 @@ const {
             @update:model-value="onCategoryChange"
         />
         
-         <!-- Filter Group: Price -->
+        <!-- Bộ lọc: Khoảng giá -->
         <FilterPriceRange @apply-price-range="onPriceApply" />
 
-         <!-- Filter Group: Shipping -->
+        <!-- Bộ lọc: Vận chuyển -->
         <FilterCheckboxGroup 
             v-model="selectedShipping"
             title="Đơn Vị Vận Chuyển" 
