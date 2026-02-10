@@ -23,14 +23,6 @@ const product = ref(MOCK_PRODUCT);
       </div>
     </div>
 
-    <div class="bg-white p-6 rounded shadow-sm mt-4">
-      <h2 class="text-lg font-medium bg-gray-50 p-3 mb-4 uppercase text-gray-700">Mô tả sản phẩm</h2>
-      <div class="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
-        Chất liệu: Cotton 100% 2 chiều định lượng 250gsm
-        Form áo: Oversize
-        Công nghệ in: In lụa thủ công cao cấp
-        ...
-      </div>
-    </div>
+
   </div>
 </template>
