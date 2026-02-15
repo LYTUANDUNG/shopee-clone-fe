@@ -1,3 +1,4 @@
+export const FOOTER_CATEGORIES = [
 export interface FooterItem {
     name: string;
     link: string;
@@ -25,6 +26,7 @@ export const FOOTER_CATEGORIES: FooterCategory[] = [
             { name: 'Áo Vest và Blazer', link: '/Áo-Vest-và-Blazer-cat.11035567.11035572' },
             { name: 'Áo Hoodie, Áo Len & Áo Nỉ', link: '/Áo-Hoodie-Áo-Len-Áo-Nỉ-cat.11035567.11035578' },
             { name: 'Quần Jeans', link: '/Quần-Jeans-cat.11035567.11035583' },
+            // ... Hùng thêm tiếp các mục khác từ HTML vào đây nhé
             { name: 'Quần Dài/Quần Âu', link: '/Quần-Dài-Quần-Âu-cat.11035567.11035584' },
             { name: 'Quần Short', link: '/Quần-Short-cat.11035567.11035590' },
             { name: 'Áo', link: '/Áo-cat.11035567.11035592' },
@@ -50,6 +52,9 @@ export const FOOTER_CATEGORIES: FooterCategory[] = [
         items: [
             { name: 'Chăn, Ga, Gối & Nệm', link: '/Chăn-Ga-Gối-Nệm-cat.11036670.11036683' },
             { name: 'Đồ nội thất', link: '/Đồ-nội-thất-cat.11036670.11036695' },
+        ]
+    },
+    // Thêm đủ 25+ danh mục như trong hình image_cf906a.png
             { name: 'Trang trí nhà cửa', link: '/Trang-trí-nhà-cửa-cat.11036670.11036717' },
             { name: 'Dụng cụ & Thiết bị tiện ích', link: '/Dụng-cụ-Thiết-bị-tiện-ích-cat.11036670.11036732' },
             { name: 'Nhà bếp & Hộp đựng thực phẩm', link: '/Đồ-dùng-nhà-bếp-và-hộp-đựng-thực-phẩm-cat.11036670.11036748' },

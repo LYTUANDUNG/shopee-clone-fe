@@ -1,24 +1,25 @@
 <template>
   <button
+      v-bind="$attrs"
+      :type="type"
       :class="[
-      'inline-flex items-center justify-center transition-all duration-200 active:scale-95 border border-transparent cursor-pointer',
+      'inline-flex items-center justify-center transition-all duration-200 active:scale-[0.98] border border-transparent cursor-pointer',
       sizeClasses,
       bgColor,
       textColor,
       rounded,
       customClasses
     ]"
-      v-bind="$attrs"
       @click="handleClick"
   >
     <component
         :is="leftIcon"
         v-if="leftIcon"
         :size="iconSize"
-        class="flex-shrink-0 stroke-current"
+        class="flex-shrink-0 stroke-current mr-2"
     />
 
-    <span v-if="label || $slots.default" :class="labelClasses">
+    <span :class="['flex items-center justify-center', labelClasses]">
       <slot>{{ label }}</slot>
     </span>
 
@@ -26,13 +27,13 @@
         :is="rightIcon"
         v-if="rightIcon"
         :size="iconSize"
-        class="flex-shrink-0 stroke-current"
+        class="flex-shrink-0 stroke-current ml-2"
     />
   </button>
 </template>
 
 <script setup lang="ts">
-import { computed, useSlots } from 'vue';
+import { computed } from 'vue';
 import type { Component } from 'vue';
 
 interface ButtonProps {
@@ -45,40 +46,36 @@ interface ButtonProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   rounded?: string;
   customClasses?: string;
+  type?: 'button' | 'submit' | 'reset';
+  labelClasses?: string;
 }
 
 const props = withDefaults(defineProps<ButtonProps>(), {
   label: '',
   iconSize: 18,
-  bgColor: 'bg-shopee-orange',
+  bgColor: 'bg-[#ee4d2d]',
   textColor: 'text-white',
   size: 'md',
   rounded: 'rounded-sm',
-  customClasses: ''
+  customClasses: '',
+  type: 'button',
+  labelClasses: ''
 });
 
 const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void;
 }>();
 
-const slots = useSlots();
-
 const handleClick = (event: MouseEvent) => {
   emit('click', event);
 };
 
-const labelClasses = computed(() => ({
-  'ml-2': props.leftIcon && (props.label || slots.default),
-  'mr-2': props.rightIcon && (props.label || slots.default),
-  'font-medium': true
-}));
-
 const sizeClasses = computed(() => {
   const sizes = {
-    sm: 'px-3 py-1.5 text-xs',
-    md: 'px-4 py-2 text-sm',
-    lg: 'px-8 py-3 text-base',
-    xl: 'w-full py-3 text-lg uppercase font-bold'
+    sm: 'px-3 h-8 text-xs',
+    md: 'px-4 h-10 text-sm',
+    lg: 'px-8 h-12 text-base',
+    xl: 'w-full h-12 text-base uppercase font-medium'
   };
   return sizes[props.size] || sizes.md;
 });
