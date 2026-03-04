@@ -9,7 +9,7 @@ import {
   ProductPagination
 } from "@/features/product/components";
 import { useProductList } from "@/features/product/composables";
-import type { FilterState, SortOption } from "@/features/product/types";
+import type { FilterState, SortOption } from "@/features/product/types/index.ts";
 import Header from "@/shared/components/organisms/Header.vue";
 
 // Composables chính
@@ -34,10 +34,10 @@ const keyword = computed(() => {
 
 // Xử lý sự kiện (Event Handlers)
 const onFilterUpdate = (
-  type: string,
+  type: any,
   value: FilterState[keyof FilterState],
 ) => {
-  if (["locations", "categories", "priceRange", "shipping"].includes(type)) {
+  if (typeof type === 'string') {
     handleFilterChange(type as keyof FilterState, value);
   }
 };

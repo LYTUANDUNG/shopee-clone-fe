@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { usePagination } from "@/features/product/composables";
+import { ChevronLeft, ChevronRight } from "lucide-vue-next";
 
 const props = defineProps<{
   currentPage: number;

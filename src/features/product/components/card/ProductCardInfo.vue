@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Product } from "@/features/product/types";
+import type { Product } from "@/features/product/types/index.ts";
 import {
   ProductCardTitle,
   ProductCardPrice,

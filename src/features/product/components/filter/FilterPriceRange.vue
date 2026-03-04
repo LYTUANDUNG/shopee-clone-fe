@@ -2,15 +2,20 @@
 import { ref } from "vue";
 import BaseButton from "@/shared/components/atoms/BaseButton.vue";
 
-const minPrice = ref<string>("");
-const maxPrice = ref<string>("");
+const props = defineProps<{
+  minPrice: number | null;
+  maxPrice: number | null;
+}>();
 
 const emit = defineEmits(["apply-price-range"]);
 
+const localMin = ref<string>(props.minPrice ? String(props.minPrice) : "");
+const localMax = ref<string>(props.maxPrice ? String(props.maxPrice) : "");
+
 const applyPriceFilter = () => {
   emit("apply-price-range", {
-    min: minPrice.value ? Number(minPrice.value) : null,
-    max: maxPrice.value ? Number(maxPrice.value) : null,
+    min: localMin.value ? Number(localMin.value) : null,
+    max: localMax.value ? Number(localMax.value) : null,
   });
 };
 </script>
@@ -20,14 +25,14 @@ const applyPriceFilter = () => {
     <h3 class="filter-header">Khoảng Giá</h3>
     <div class="price-input-container">
       <input
-        v-model="minPrice"
+        v-model="localMin"
         type="number"
         placeholder="₫ TỪ"
         class="price-input"
       />
       <span class="range-separator">-</span>
       <input
-        v-model="maxPrice"
+        v-model="localMax"
         type="number"
         placeholder="₫ ĐẾN"
         class="price-input"
