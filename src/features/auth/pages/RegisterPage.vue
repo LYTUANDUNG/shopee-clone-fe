@@ -27,6 +27,7 @@ const handleRegister = () => {
           <BaseInput
               v-model="phone"
               placeholder="Số điện thoại"
+              :is-number-only="true"
           />
 
           <BaseButton
