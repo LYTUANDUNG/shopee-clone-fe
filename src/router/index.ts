@@ -17,7 +17,7 @@ const router = createRouter({
                 title: 'Đăng nhập - Mua sắm ngay | Shopee Việt Nam'
             }
         },
-
+        {
             path: '/product/:id',
             name: 'product',
             component: () => import('@/features/product/pages/ProductDetailPage.vue')
