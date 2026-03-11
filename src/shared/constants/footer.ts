@@ -1,3 +1,4 @@
+export const FOOTER_CATEGORIES = [
 export interface FooterItem {
     name: string;
     link: string;
