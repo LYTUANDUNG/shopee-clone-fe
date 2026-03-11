@@ -1,14 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import AuthLayout from '../layouts/AuthLayout.vue';
 import BaseInput from '@/shared/components/atoms/BaseInput.vue';
 import BaseButton from '@/shared/components/atoms/BaseButton.vue';
+import { useLoginForm } from '@/composables/useLoginForm';
+import { useAuthStore } from '@/stores/auth';
 
-const username = ref('');
-const password = ref('');
+const router = useRouter();
+const authStore = useAuthStore();
+const { onSubmit, errors, isSubmitting } = useLoginForm();
 
-const handleLogin = () => {
-  console.log('Login with:', username.value, password.value);
+const handleLogin = async () => {
+  await onSubmit();
+  if (authStore.accessToken) {
+    console.log('Chuyển hướng về trang chủ...');
+    router.push('/');
+  }
 };
 </script>
 
@@ -38,13 +45,31 @@ const handleLogin = () => {
         </div>
 
         <form class="space-y-4" @submit.prevent="handleLogin">
-          <BaseInput v-model="username" placeholder="Email/Số điện thoại/Tên đăng nhập" />
-          <BaseInput v-model="password" type="password" placeholder="Mật khẩu" />
+          <div>
+            <BaseInput
+                name="email"
+                placeholder="Email/Số điện thoại/Tên đăng nhập"
+                :error-message="errors.email"
+            />
+            <span v-if="errors.email" class="text-xs text-red-500 mt-1">{{ errors.email }}</span>
+          </div>
+
+          <div>
+            <BaseInput
+                name="password"
+                type="password"
+                placeholder="Mật khẩu"
+                :error-message="errors.password"
+            />
+            <span v-if="errors.password" class="text-xs text-red-500 mt-1">{{ errors.password }}</span>
+          </div>
 
           <BaseButton
               type="submit"
               size="xl"
               label="ĐĂNG NHẬP"
+              :loading="isSubmitting"
+              :disabled="isSubmitting"
               custom-classes="hover:opacity-90 shadow-sm text-white"
           />
         </form>
