@@ -12,10 +12,13 @@ const router = createRouter({
         {
             path: '/login',
             name: 'login',
-            component: () => import('@/features/pages/LoginPage.vue'),
-            meta: {
-                title: 'Đăng nhập - Mua sắm ngay | Shopee Việt Nam'
-            }
+            component: () => import('@/features/auth/pages/LoginPage.vue'),
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: () => import('@/features/auth/pages/RegisterPage.vue'),
+            meta: { title: 'Đăng ký | Shopee Clone' }
         },
 
     ]

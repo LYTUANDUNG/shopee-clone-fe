@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import AuthLayout from '../layouts/AuthLayout.vue';
+import AuthLayout from '@/features/layouts/AuthLayout.vue';
 import BaseInput from '@/shared/components/atoms/BaseInput.vue';
 import BaseButton from '@/shared/components/atoms/BaseButton.vue';
 
