@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { Eye, EyeOff } from 'lucide-vue-next';
-import type { Component } from 'vue';
+import {computed, ref} from 'vue';
+import {Eye, EyeOff} from 'lucide-vue-next';
+import type {Component} from 'vue';
 
 interface InputProps {
   modelValue?: string | number;
@@ -70,8 +70,9 @@ const onInput = (e: Event) => {
   <div class="w-full space-y-1.5 text-left">
     <label v-if="label" class="block text-sm font-medium text-gray-700">{{ label }}</label>
     <div class="relative group">
-      <div v-if="leftIcon" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-shopee-orange transition-colors">
-        <component :is="leftIcon" :size="20" />
+      <div v-if="leftIcon"
+           class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-shopee-orange transition-colors">
+        <component :is="leftIcon" :size="20"/>
       </div>
 
       <input
@@ -90,7 +91,7 @@ const onInput = (e: Event) => {
       <div v-if="type === 'password' || rightIcon"
            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer hover:text-gray-600"
            @click="type === 'password' ? (isPasswordVisible = !isPasswordVisible) : null">
-        <component :is="type === 'password' ? (isPasswordVisible ? EyeOff : Eye) : rightIcon" :size="20" />
+        <component :is="type === 'password' ? (isPasswordVisible ? EyeOff : Eye) : rightIcon" :size="20"/>
       </div>
     </div>
     <p v-if="hasError" class="text-xs text-red-500 mt-1 min-h-[1rem]">{{ errorMessage }}</p>
