@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { HOME_CATEGORIES as categories } from '../constants'
+import { HOME_CATEGORIES as categories } from '../constants/constants'
 </script>
 
 <template>

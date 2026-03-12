@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { HOME_BANNERS as banners, RIGHT_ADS as ads } from '../constants'
+import { HOME_BANNERS as banners, RIGHT_ADS as ads } from '../constants/constants'
 
 const currentIndex = ref(0)
 let timer: ReturnType<typeof setInterval> | null = null
