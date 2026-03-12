@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import {ref} from 'vue';
 import AuthLayout from '@/features/layouts/AuthLayout.vue';
 import BaseInput from '@/shared/components/atoms/BaseInput.vue';
 import BaseButton from '@/shared/components/atoms/BaseButton.vue';
@@ -52,7 +52,8 @@ const handleRegister = () => {
                 text-color="text-[#222]"
                 custom-classes="border !border-black/10 hover:bg-gray-50 font-normal shadow-sm flex items-center justify-center"
             >
-              <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" class="w-5 h-5 mr-2" alt="FB" />
+              <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png"
+                   class="w-5 h-5 mr-2" alt="FB"/>
               Facebook
             </BaseButton>
 
@@ -61,7 +62,8 @@ const handleRegister = () => {
                 text-color="text-[#222]"
                 custom-classes="border !border-black/10 hover:bg-gray-50 font-normal shadow-sm flex items-center justify-center"
             >
-              <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" class="w-5 h-5 mr-2" alt="GG" />
+              <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                   class="w-5 h-5 mr-2" alt="GG"/>
               Google
             </BaseButton>
           </div>
@@ -69,13 +71,31 @@ const handleRegister = () => {
 
         <div class="mt-6 text-center text-xs text-[#222]">
           Bằng việc đăng ký, bạn đã đồng ý với Shopee về
-          <BaseLink to="/terms" custom-classes="text-[#ee4d2d]">Điều khoản dịch vụ</BaseLink> &
-          <BaseLink to="/privacy" custom-classes="text-[#ee4d2d]">Chính sách bảo mật</BaseLink>
+          <BaseLink
+              to="/terms"
+              variant="orange"
+              class="font-bold no-underline"
+          >
+            Điều khoản dịch vụ
+          </BaseLink> &
+          <BaseLink
+              to="/privacy"
+              variant="orange"
+              class="font-bold no-underline"
+          >
+            Chính sách bảo mật
+          </BaseLink>
         </div>
 
         <div class="mt-8 text-center text-sm text-gray-400">
           Bạn đã có tài khoản?
-          <BaseLink to="/login" custom-classes="text-[#ee4d2d] font-medium hover:opacity-80 ml-1">Đăng nhập</BaseLink>
+          <BaseLink
+              to="/login"
+              variant="orange"
+              class="font-bold ml-1 no-underline"
+          >
+            Đăng nhập
+          </BaseLink>
         </div>
       </div>
     </div>
