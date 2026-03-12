@@ -11,6 +11,8 @@ import {
 import { useProductList } from "@/features/product/composables";
 import type { FilterState, SortOption } from "@/features/product/types/index.ts";
 import Header from "@/shared/components/organisms/Header.vue";
+import Breadcrumb from "@/shared/components/molecules/Breadcrumb.vue";
+import type { BreadcrumbItemData } from "@/shared/components/molecules/Breadcrumb.vue";
 
 // Composables chính
 const route = useRoute();
@@ -31,6 +33,12 @@ const keyword = computed(() => {
   const q = route.query.keyword || route.query.q;
   return q ? String(q) : "áo thun";
 });
+
+const breadcrumbItems = computed<BreadcrumbItemData[]>(() => [
+  { label: 'Shopee', to: '/' },
+  { label: 'Tìm kiếm' },
+  { label: keyword.value }
+]);
 
 // Xử lý sự kiện (Event Handlers)
 const onFilterUpdate = (
@@ -59,6 +67,9 @@ const onPageNumChange = (page: number) => {
   <Header />
 
   <div class="page-container">
+    <!-- Breadcrumb điều hướng -->
+    <Breadcrumb :items="breadcrumbItems" class="mb-4" />
+
     <div class="content-wrapper">
       <!-- Sidebar bên trái -->
       <aside class="sidebar-wrapper">

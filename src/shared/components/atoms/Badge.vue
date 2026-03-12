@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 
 // 1. Định nghĩa các loại Badge dựa trên ảnh mẫu
-type BadgeType = 'mall' | 'favorite' | 'discount' | 'voucher' | 'trend';
+type BadgeType = 'mall' | 'favorite' | 'discount' | 'voucher' | 'trend' | 'ad';
 
 interface Props {
   text: string;
@@ -25,7 +25,8 @@ const badgeClasses = computed(() => {
     favorite: 'bg-[#f25220] text-white',
     discount: 'bg-[#ffe91f] text-[#ee4d2d]',
     voucher: 'bg-[#ffce3d] text-[#ee4d2d] ring-1 ring-[#ee4d2d]', // Có thể dùng border/ring cho voucher
-    trend: 'bg-[#4ea5ff] text-white'
+    trend: 'bg-[#4ea5ff] text-white',
+    ad: 'bg-white text-[#ee4d2d] ring-1 ring-[#ee4d2d]'
   };
 
   return `${base} ${position} ${styles[props.type]}`;

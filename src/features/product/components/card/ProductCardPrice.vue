@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { formatNumber } from "@/shared/utils/format";
+import Badge from '@/shared/components/atoms/Badge.vue';
 
 defineProps<{
   price: number;
@@ -14,12 +15,11 @@ defineProps<{
       <span class="current-price">
         {{ formatNumber(newPrice || price) }}<span class="currency-symbol">₫</span>
       </span>
-      <span
+      <Badge
         v-if="discountPercentage"
-        class="discount-badge"
-      >
-        -{{ discountPercentage }}%
-      </span>
+        :text="'-' + discountPercentage + '%'"
+        type="discount"
+      />
     </div>
   </div>
 </template>
@@ -39,9 +39,5 @@ defineProps<{
 
 .currency-symbol {
   @apply text-xs align-top underline ml-[1px];
-}
-
-.discount-badge {
-  @apply bg-[#fef3ec] text-[#ee4d2d] text-[10px] h-[16px] px-1 flex items-center rounded-sm font-semibold;
 }
 </style>
