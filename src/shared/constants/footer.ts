@@ -25,7 +25,6 @@ export const FOOTER_CATEGORIES: FooterCategory[] = [
             { name: 'Áo Vest và Blazer', link: '/Áo-Vest-và-Blazer-cat.11035567.11035572' },
             { name: 'Áo Hoodie, Áo Len & Áo Nỉ', link: '/Áo-Hoodie-Áo-Len-Áo-Nỉ-cat.11035567.11035578' },
             { name: 'Quần Jeans', link: '/Quần-Jeans-cat.11035567.11035583' },
-            // ... Hùng thêm tiếp các mục khác từ HTML vào đây nhé
             { name: 'Quần Dài/Quần Âu', link: '/Quần-Dài-Quần-Âu-cat.11035567.11035584' },
             { name: 'Quần Short', link: '/Quần-Short-cat.11035567.11035590' },
             { name: 'Áo', link: '/Áo-cat.11035567.11035592' },

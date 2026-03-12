@@ -7,17 +7,21 @@ const router = createRouter({
         {
             path: '/',
             name: 'home',
-            component: HomePage
+            component: HomePage,
+            meta: { title: 'Shopee Việt Nam | Mua sắm Online' }
         },
         {
             path: '/login',
             name: 'login',
-            component: () => import('@/features/pages/LoginPage.vue'),
-            meta: {
-                title: 'Đăng nhập - Mua sắm ngay | Shopee Việt Nam'
-            }
+            component: () => import('@/features/auth/pages/LoginPage.vue'),
+            meta: { title: 'Đăng nhập - Mua sắm ngay | Shopee Việt Nam' }
         },
-
+        {
+            path: '/register',
+            name: 'register',
+            component: () => import('@/features/auth/pages/RegisterPage.vue'),
+            meta: { title: 'Đăng ký | Shopee Clone' }
+        },
         {
             path: '/product/:id',
             name: 'product',
@@ -26,7 +30,7 @@ const router = createRouter({
     ]
 })
 
-router.beforeEach((to) => {
+router.afterEach((to) => {
     document.title = (to.meta.title as string) || 'Shopee Clone';
 });
 
