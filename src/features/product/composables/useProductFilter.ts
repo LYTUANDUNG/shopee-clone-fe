@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import type { FilterState } from '@/features/product/types';
+import type { FilterState } from '@/features/product/types/index.ts';
 import { STATIC_FILTER_OPTIONS } from '@/features/product/constants/sortOptions';
 
 export const useProductFilter = (

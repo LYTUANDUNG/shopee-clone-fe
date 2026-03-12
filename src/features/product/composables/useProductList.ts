@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 import { SORT_OPTIONS } from '@/features/product/constants/sortOptions';
-import type { Product, FilterState, SortOption } from '@/features/product/types';
+import type { Product, FilterState, SortOption } from '@/features/product/types/index.ts';
 
 export const useProductList = () => {
     const products = ref<Product[]>([]);

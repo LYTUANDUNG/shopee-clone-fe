@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SortOption } from '@/features/product/types';
+import type { SortOption } from '@/features/product/types/index.ts';
 import BaseButton from '@/shared/components/atoms/BaseButton.vue';
 
 defineProps<{
