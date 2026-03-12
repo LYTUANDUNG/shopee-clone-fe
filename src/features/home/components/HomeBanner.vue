@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-
-const banners = [
-  'https://cf.shopee.vn/file/vn-11134258-7r98o-lx34u4416zoh70_xxhdpi', // Placeholder img
-  'https://cf.shopee.vn/file/vn-11134258-7r98o-lyj9t6p86ofqaf_xxhdpi',
-  'https://cf.shopee.vn/file/vn-11134258-7r98o-lyo53pnbj4qsc3_xxhdpi'
-]
+import { HOME_BANNERS as banners, RIGHT_ADS as ads } from '../constants'
 
 const currentIndex = ref(0)
 let timer: ReturnType<typeof setInterval> | null = null
@@ -83,11 +78,8 @@ onUnmounted(() => {
     
     <!-- Right side static banners -->
     <div class="w-[400px] pl-1.5 flex flex-col gap-1.5 h-[235px]">
-      <a href="#" class="h-[114px] rounded-sm overflow-hidden flex-1 block">
-        <img src="https://cf.shopee.vn/file/vn-11134258-7r98o-lyj9tqnv8vty5d_xhdpi" alt="Ad 1" class="w-full h-full object-cover hover:opacity-90 transition-opacity" />
-      </a>
-      <a href="#" class="h-[114px] rounded-sm overflow-hidden flex-1 block">
-        <img src="https://cf.shopee.vn/file/vn-11134258-7r98o-lyj9u5g0i4nqa2_xhdpi" alt="Ad 2" class="w-full h-full object-cover hover:opacity-90 transition-opacity" />
+      <a v-for="(ad, index) in ads" :key="index" :href="ad.link" class="h-[114px] rounded-sm overflow-hidden flex-1 block">
+        <img :src="ad.image" :alt="ad.alt" class="w-full h-full object-cover hover:opacity-90 transition-opacity" />
       </a>
     </div>
   </div>
