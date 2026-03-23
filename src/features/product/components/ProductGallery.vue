@@ -25,6 +25,7 @@ const setActiveImage = (img: string) => {
       <div 
         v-for="(img, index) in images" 
         :key="index"
+        @mouseover="setActiveImage(img)"
         @click="setActiveImage(img)"
         class="aspect-square border rounded-sm overflow-hidden cursor-pointer hover:border-orange-500 transition-colors"
         :class="{ 'border-orange-500': activeImage === img }"

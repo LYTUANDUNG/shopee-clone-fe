@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { formatCurrency } from '@/shared/utils/format';
+import { useCartStore } from '@/stores/cart';
 import type { Product } from '../types';
 
 interface Props {
@@ -17,6 +18,41 @@ const handleVariantSelect = (type: string, option: string) => {
     ...selectedVariant.value,
     [type]: option,
   };
+};
+
+const displayPrice = computed(() => {
+  let price = props.product.price;
+  if (selectedVariant.value['Size']) {
+    const sizeIndex = props.product.variants?.find(v => v.type === 'Size')?.options.indexOf(selectedVariant.value['Size']) || 0;
+    price += sizeIndex * 15000;
+  }
+  return price;
+});
+
+const cartStore = useCartStore();
+
+const handleAddToCart = () => {
+  if (props.product.variants) {
+    const missingVariants = props.product.variants.filter(v => !selectedVariant.value[v.type]);
+    if (missingVariants.length > 0) {
+      alert(`Vui lòng chọn ${missingVariants.map(v => v.type).join(', ')}`);
+      return;
+    }
+  }
+
+  if (quantity.value < 1) {
+    alert(`Số lượng không hợp lệ`);
+    return;
+  }
+
+  cartStore.addItem({
+    product: props.product,
+    variant: selectedVariant.value,
+    quantity: quantity.value,
+    price: displayPrice.value
+  });
+
+  alert('Đã thêm sản phẩm vào giỏ hàng');
 };
 
 const decreaseQuantity = () => {
@@ -71,7 +107,7 @@ const increaseQuantity = () => {
           {{ formatCurrency(product.originalPrice) }}
         </span>
         <span class="text-3xl font-medium text-orange-500">
-          {{ formatCurrency(product.price) }}
+          {{ formatCurrency(displayPrice) }}
         </span>
         <span v-if="product.originalPrice" class="bg-orange-500 text-white text-[10px] font-bold px-1 rounded-[2px] uppercase mb-1">
           {{ Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) }}% GIẢM
@@ -162,7 +198,7 @@ const increaseQuantity = () => {
 
     <!-- Actions -->
     <div class="flex gap-4 mt-8 px-4">
-      <button class="px-8 bg-orange-50 border border-orange-500 text-orange-500 py-3 rounded-[2px] hover:bg-orange-100 transition-colors flex items-center justify-center gap-2 shadow-sm min-w-[200px]">
+      <button @click="handleAddToCart" class="px-8 bg-orange-50 border border-orange-500 text-orange-500 py-3 rounded-[2px] hover:bg-orange-100 transition-colors flex items-center justify-center gap-2 shadow-sm min-w-[200px]">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
           <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
         </svg>
