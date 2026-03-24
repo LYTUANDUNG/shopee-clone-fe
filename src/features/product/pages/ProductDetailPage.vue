@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import ProductGallery from '../components/ProductGallery.vue';
 import ProductInfo from '../components/ProductInfo.vue';
+import ShopInfo from '../components/ShopInfo.vue';
 import { MOCK_PRODUCT } from '../constants';
 
 const product = ref(MOCK_PRODUCT);
@@ -23,6 +24,7 @@ const product = ref(MOCK_PRODUCT);
       </div>
     </div>
 
+    <ShopInfo />
 
   </div>
 </template>
