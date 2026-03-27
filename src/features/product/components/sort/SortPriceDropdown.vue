@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { ChevronDown } from 'lucide-vue-next';
-import type { SortOption } from '@/features/product/types';
+import type { SortOption } from '@/features/product/types/index.ts';
 
 const props = defineProps<{
   sortBy: string;

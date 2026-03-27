@@ -1,4 +1,4 @@
-import type { Product } from './types';
+import type { Product } from '../types/productDetail';
 
 export const MOCK_PRODUCT: Product = {
     id: 1,

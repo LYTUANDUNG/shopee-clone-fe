@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Product } from '@/features/product/types';
+import type { Product } from '@/features/product/types/index.ts';
 import {ProductCardImage, ProductCardInfo} from '@/features/product/components/card';
 import BaseButton from '@/shared/components/atoms/BaseButton.vue';
 

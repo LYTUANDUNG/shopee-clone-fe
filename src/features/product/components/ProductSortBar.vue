@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SortOption } from '@/features/product/types';
+import type { SortOption } from '@/features/product/types/index.ts';
 import { SortOptions, SortPriceDropdown, SortMiniPagination } from '@/features/product/components/sort';
 
 defineProps<{
