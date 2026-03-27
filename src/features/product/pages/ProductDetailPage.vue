@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue';
 import ProductGallery from '../components/ProductGallery.vue';
 import ProductMetaInfo from '../components/ProductMetaInfo.vue';
-import ShopInfoBox from '../components/ShopInfoBox.vue';
+import ShopInfo from '../components/ShopInfo.vue';
 import Breadcrumb from '@/shared/components/molecules/Breadcrumb.vue';
 import { MOCK_PRODUCT } from '../constants/mockData';
 
@@ -36,9 +36,7 @@ const breadcrumbItems = computed(() => [
 
       </div>
     </div>
-    <div class="mt-4">
-      <ShopInfoBox />
-    </div>
+    <ShopInfo />
 
   </div>
 </template>
