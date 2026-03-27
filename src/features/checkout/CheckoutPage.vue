@@ -12,7 +12,6 @@ const addresses = ref([
 ]);
 const currentAddress = computed(() => addresses.value.find(a => a.id === selectedAddressId.value) || addresses.value[0]);
 
-// --- 2. QUẢN LÝ VẬN CHUYỂN & MODAL ---
 const isShowShippingModal = ref(false);
 const selectedShippingOption = ref('nhanh');
 const shippingFee = ref(35700);
@@ -28,8 +27,6 @@ const confirmShipping = () => {
 };
 const closeShippingModal = () => { isShowShippingModal.value = false; };
 
-// --- 3. QUẢN LÝ VOUCHER (SHOP & SHOPEE) ---
-// Voucher của Shop (Modal riêng của shop)
 const isShowShopVoucherModal = ref(false);
 const selectedShopVoucherId = ref(1);
 const shopVouchers = ref([
@@ -38,7 +35,6 @@ const shopVouchers = ref([
 ]);
 const currentShopVoucherDiscount = computed(() => shopVouchers.value.find(v => v.id === selectedShopVoucherId.value)?.discount || 0);
 
-// Shopee Voucher (Modal chung của hệ thống)
 const isShowShopeeVoucherModal = ref(false);
 const selectedShopeeVoucherId = ref<number | null>(null);
 const shopeeVouchers = ref([
@@ -47,7 +43,6 @@ const shopeeVouchers = ref([
 ]);
 const shopeeVoucherDiscount = computed(() => shopeeVouchers.value.find(v => v.id === selectedShopeeVoucherId.value)?.discount || 0);
 
-// --- 4. PHƯƠNG THỨC THANH TOÁN ---
 const paymentMethods = [
   { id: 'shopeepay', name: 'Ví ShopeePay' },
   { id: 'card', name: 'Thẻ Tín dụng/Ghi nợ' },
@@ -62,7 +57,6 @@ const cardPromotions = ref([
 ]);
 const currentPayment = computed(() => paymentMethods.find(m => m.id === selectedPaymentId.value));
 
-// --- 5. DỮ LIỆU SẢN PHẨM & XU ---
 const userShopeeXu = ref(5000);
 const isUseShopeeXu = ref(false);
 const checkoutItems = ref([
@@ -77,7 +71,6 @@ const checkoutItems = ref([
   }
 ]);
 
-// --- 6. LOGIC TÍNH TIỀN ---
 const updateQuantity = (id: string, delta: number) => {
   const item = checkoutItems.value.find(i => i.id === id);
   if (item && item.quantity + delta >= 1) item.quantity += delta;
