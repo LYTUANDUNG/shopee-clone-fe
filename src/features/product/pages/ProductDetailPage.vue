@@ -36,7 +36,6 @@ const breadcrumbItems = computed(() => [
 
       </div>
     </div>
-    
     <div class="mt-4">
       <ShopInfoBox />
     </div>

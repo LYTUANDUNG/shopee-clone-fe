@@ -48,8 +48,14 @@ const handleAddToCart = () => {
     return;
   }
 
+  const cartProduct = {
+    ...props.product,
+    image: props.product.images?.[0] || '',
+    location: 'Hà Nội',
+  } as any;
+
   cartStore.addItem({
-    product: props.product,
+    product: cartProduct,
     variant: selectedVariant.value,
     quantity: quantity.value,
     price: displayPrice.value
