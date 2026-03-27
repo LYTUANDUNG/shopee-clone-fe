@@ -31,6 +31,12 @@ const router = createRouter({
             path: '/product/:id',
             name: 'product',
             component: () => import('@/features/product/pages/ProductDetailPage.vue')
+        },
+        {
+            path: '/product_review/:id',
+            name: 'product-detail',
+            component: () => import('@/features/product/pages/ProductDetailPage.vue'),
+            meta: { title: 'Chi tiết sản phẩm | Shopee Clone' }
         }
     ]
 })
