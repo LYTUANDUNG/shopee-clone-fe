@@ -18,7 +18,7 @@ const router = createRouter({
         {
             path: '/checkout',
             name: 'checkout',
-            component: () => import('@/features/checkout/CheckoutPage.vue'),
+            component: () => import('@/features/checkout/pages/CheckoutView.vue'),
             meta: { title: 'Thanh toán | Shopee Clone', requiresAuth: true }
         },
         {
