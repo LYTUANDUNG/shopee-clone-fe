@@ -150,4 +150,24 @@ export const mockOrders: Order[] = [
     deliveryStatus: 'Đã nhận hàng',
     createdAt: '2024-03-10T16:30:00Z',
   },
+  {
+    id: 'ORD-008',
+    shopName: 'Fashion Hub VN',
+    isFavoriteShop: true,
+    products: [
+      {
+        id: 'P009',
+        name: 'Áo thun nam basic cotton oversize form rộng unisex',
+        image: 'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lrtxbksgxbxg08_tn',
+        variant: 'Phân loại hàng: Trắng, XL',
+        quantity: 2,
+        price: 129000,
+        originalPrice: 180000,
+      },
+    ],
+    totalPrice: 238000,
+    status: 'received',
+    deliveryStatus: 'Đã giao hàng thành công',
+    createdAt: '2024-03-25T10:00:00Z',
+  },
 ];

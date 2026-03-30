@@ -3,6 +3,7 @@ export type OrderStatus =
   | 'pending_payment'
   | 'shipping'
   | 'delivering'
+  | 'received'
   | 'completed'
   | 'cancelled'
   | 'return_refund';

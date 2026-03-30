@@ -157,6 +157,25 @@
           />
         </template>
 
+        <!-- received -->
+        <template v-else-if="order.status === 'received'">
+          <BaseButton
+            size="sm"
+            label="Đã Nhận Hàng"
+            @click="$emit('confirm-received', order)"
+          />
+          <BaseButton
+            size="sm"
+            label="Yêu Cầu Trả Hàng/Hoàn Tiền"
+            @click="$emit('request-return', order)"
+          />
+          <BaseButton
+            v-bind="ghostProps"
+            label="Liên Hệ Người Bán"
+            @click="$emit('contact-seller', order)"
+          />
+        </template>
+
         <!-- cancelled -->
         <template v-else-if="order.status === 'cancelled'">
           <BaseButton
@@ -218,7 +237,7 @@ const ghostProps = {
 const ghostGrayProps = {
   ...ghostProps,
   customClasses:
-    "!bg-gray-300 border border-gray-300 cursor-not-allowed !text-gray-700",
+    "!bg-gray-300 border border-gray-300 !text-gray-700 cursor-default pointer-events-none",
 };
 
 const formatDeadline = (iso: string) => {
