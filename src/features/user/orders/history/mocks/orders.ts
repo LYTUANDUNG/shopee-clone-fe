@@ -19,8 +19,7 @@ export const mockOrders: Order[] = [
     totalPrice: 47390,
     status: 'completed',
     deliveryStatus: 'Giao hàng thành công',
-    reviewDeadline: '2026-04-28',
-    reviewBonus: 200,
+    isReviewed: true,
     createdAt: '2024-03-20T10:00:00Z',
   },
   {
@@ -71,7 +70,7 @@ export const mockOrders: Order[] = [
     ],
     totalPrice: 123725,
     status: 'delivering',
-    deliveryStatus: 'Giao hàng thành công',
+    deliveryStatus: 'Đơn hàng sẽ sớm được giao, vui lòng chú ý điện thoại',
     createdAt: '2024-03-22T08:00:00Z',
   },
   {
@@ -147,6 +146,7 @@ export const mockOrders: Order[] = [
     ],
     totalPrice: 330000,
     status: 'return_refund',
+    refundAmount: 139920,
     deliveryStatus: 'Đã nhận hàng',
     createdAt: '2024-03-10T16:30:00Z',
   },

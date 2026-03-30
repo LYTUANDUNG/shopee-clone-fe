@@ -37,5 +37,7 @@ export interface Order {
   cancelledBy?: string;           // e.g. "bạn" | "người bán" | "hệ thống"
   reviewDeadline?: string;        // ISO date string, e.g. "2026-04-28"
   reviewBonus?: number;           // e.g. 200 (Xu)
+  isReviewed?: boolean;           // true = đã đánh giá tất cả sản phẩm
+  refundAmount?: number;          // tổng tiền hoàn (dùng cho return_refund)
   createdAt?: string;
 }

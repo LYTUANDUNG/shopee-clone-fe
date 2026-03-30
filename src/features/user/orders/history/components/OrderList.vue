@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-3">
+  <div class="order-list">
     <template v-if="orders.length">
       <OrderCard
         v-for="order in orders"
@@ -19,11 +19,12 @@
       />
     </template>
 
-    <div v-else class="flex flex-col items-center justify-center py-20 text-gray-400 bg-white">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-24 h-24 mb-4 text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <!-- Empty state -->
+    <div v-else class="empty-state">
+      <svg xmlns="http://www.w3.org/2000/svg" class="empty-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
       </svg>
-      <p class="text-sm">Không có đơn hàng nào</p>
+      <p class="empty-text">Không có đơn hàng nào</p>
     </div>
   </div>
 </template>
@@ -48,3 +49,25 @@ defineEmits<{
   (e: 'view-detail', order: Order): void;
 }>();
 </script>
+
+<style scoped>
+/* Vertical stack of order cards */
+.order-list {
+  @apply space-y-3;
+}
+
+/* Empty-state container */
+.empty-state {
+  @apply flex flex-col items-center justify-center py-20 text-gray-400 bg-white;
+}
+
+/* Empty-state illustration icon */
+.empty-icon {
+  @apply w-24 h-24 mb-4 text-gray-200;
+}
+
+/* Empty-state message */
+.empty-text {
+  @apply text-sm;
+}
+</style>
