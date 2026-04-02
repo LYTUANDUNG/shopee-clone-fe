@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomePage from "@/features/pages/HomePage.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,7 +6,7 @@ const router = createRouter({
         {
             path: '/',
             name: 'home',
-            component: HomePage,
+            component: () => import("@/features/pages/HomePage.vue"),
             meta: { title: 'Shopee Việt Nam | Mua sắm Online' }
         },
         {
@@ -15,6 +14,12 @@ const router = createRouter({
             name: 'login',
             component: () => import('@/features/auth/pages/LoginPage.vue'),
             meta: { title: 'Đăng nhập - Mua sắm ngay | Shopee Việt Nam' }
+        },
+        {
+            path: '/checkout',
+            name: 'checkout',
+            component: () => import('@/features/checkout/pages/CheckoutView.vue'),
+            meta: { title: 'Thanh toán | Shopee Clone', requiresAuth: true }
         },
         {
             path: '/register',

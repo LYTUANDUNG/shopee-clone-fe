@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
+// Components từ develop
 import ProductGallery from '../components/ProductGallery.vue';
 import ProductMetaInfo from '../components/ProductMetaInfo.vue';
 import ShopInfo from '../components/ShopInfo.vue';
 import Breadcrumb from '@/shared/components/molecules/Breadcrumb.vue';
+// Component Review của Hùng
+import ProductReviewContainer from '../components/ProductReviewContainer.vue';
+// Sử dụng đường dẫn constants từ branch develop cho đồng bộ
 import { MOCK_PRODUCT } from '../constants/mockData';
+
+const route = useRoute();
+const productId = route.params.id as string;
 
 const product = ref(MOCK_PRODUCT);
 
@@ -18,14 +26,13 @@ const breadcrumbItems = computed(() => [
 </script>
 
 <template>
-  <div class="container mx-auto px-4 py-8">
+  <div class="container mx-auto px-4 py-8 space-y-4">
     <div class="mb-4">
       <Breadcrumb :items="breadcrumbItems" />
     </div>
 
-    <div class="bg-white p-6 rounded shadow-sm">
+    <div class="bg-white p-6 rounded shadow-sm border border-gray-100">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
-        
         <div class="md:col-span-5">
           <ProductGallery :images="product.images" />
         </div>
@@ -33,10 +40,17 @@ const breadcrumbItems = computed(() => [
         <div class="md:col-span-7">
           <ProductMetaInfo :product="product" />
         </div>
-
       </div>
     </div>
+
     <ShopInfo />
 
+    <ProductReviewContainer :product-id="productId" />
   </div>
 </template>
+
+<style scoped>
+.container {
+  max-width: 1200px;
+}
+</style>
