@@ -19,6 +19,9 @@ export interface Product {
     isMall?: boolean;
     isLiked?: boolean;
     vouchers?: Voucher[];
+    images?: string[];
+    description?: string;
+    variants?: { type: string; options: string[] }[];
 }
 
 export interface FilterState {

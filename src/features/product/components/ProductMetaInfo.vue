@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { formatCurrency } from '@/shared/utils/format';
-import type { Product } from '../types';
-
+import { useCartStore } from '@/stores/cart';
+import type { Product } from '../types/productDetail';
+import Badge from '@/shared/components/atoms/Badge.vue';
+import Rating from '@/shared/components/atoms/Rating.vue';
+import BaseButton from '@/shared/components/atoms/BaseButton.vue';
+import { ShoppingCart } from 'lucide-vue-next';
 interface Props {
   product: Product;
 }
@@ -19,6 +23,47 @@ const handleVariantSelect = (type: string, option: string) => {
   };
 };
 
+const displayPrice = computed(() => {
+  let price = props.product.price;
+  if (selectedVariant.value['Size']) {
+    const sizeIndex = props.product.variants?.find(v => v.type === 'Size')?.options.indexOf(selectedVariant.value['Size']) || 0;
+    price += sizeIndex * 15000;
+  }
+  return price;
+});
+
+const cartStore = useCartStore();
+
+const handleAddToCart = () => {
+  if (props.product.variants) {
+    const missingVariants = props.product.variants.filter(v => !selectedVariant.value[v.type]);
+    if (missingVariants.length > 0) {
+      alert(`Vui lòng chọn ${missingVariants.map(v => v.type).join(', ')}`);
+      return;
+    }
+  }
+
+  if (quantity.value < 1) {
+    alert(`Số lượng không hợp lệ`);
+    return;
+  }
+
+  const cartProduct = {
+    ...props.product,
+    image: props.product.images?.[0] || '',
+    location: 'Hà Nội',
+  } as any;
+
+  cartStore.addItem({
+    product: cartProduct,
+    variant: selectedVariant.value,
+    quantity: quantity.value,
+    price: displayPrice.value
+  });
+
+  alert('Đã thêm sản phẩm vào giỏ hàng');
+};
+
 const decreaseQuantity = () => {
   if (quantity.value > 1) quantity.value--;
 };
@@ -31,8 +76,8 @@ const increaseQuantity = () => {
 <template>
   <div class="flex flex-col gap-1">
     <!-- Title -->
-    <h1 class="text-xl font-medium text-gray-800 leading-tight">
-      <span class="bg-red-500 text-white text-xs font-bold px-1 py-0.5 rounded-[2px] mr-2 align-middle">Yêu thích</span>
+    <h1 class="text-xl font-medium text-gray-800 leading-tight flex items-center flex-wrap gap-2">
+      <Badge text="Yêu thích" type="favorite" />
       <span class="align-middle">{{ product.name }}</span>
     </h1>
 
@@ -40,10 +85,8 @@ const increaseQuantity = () => {
     <div class="flex items-center mt-2">
       <div class="flex items-center gap-1 pr-4 border-r border-gray-300">
         <span class="text-orange-500 border-b border-orange-500 font-medium text-base">{{ product.rating }}</span>
-        <div class="flex text-orange-500 text-xs">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3 h-3" v-for="i in 5" :key="i">
-            <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-          </svg>
+        <div class="flex">
+          <Rating :rating="product.rating" :size="14" />
         </div>
       </div>
       <div class="px-4 border-r border-gray-300">
@@ -71,7 +114,7 @@ const increaseQuantity = () => {
           {{ formatCurrency(product.originalPrice) }}
         </span>
         <span class="text-3xl font-medium text-orange-500">
-          {{ formatCurrency(product.price) }}
+          {{ formatCurrency(displayPrice) }}
         </span>
         <span v-if="product.originalPrice" class="bg-orange-500 text-white text-[10px] font-bold px-1 rounded-[2px] uppercase mb-1">
           {{ Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) }}% GIẢM
@@ -162,15 +205,20 @@ const increaseQuantity = () => {
 
     <!-- Actions -->
     <div class="flex gap-4 mt-8 px-4">
-      <button class="px-8 bg-orange-50 border border-orange-500 text-orange-500 py-3 rounded-[2px] hover:bg-orange-100 transition-colors flex items-center justify-center gap-2 shadow-sm min-w-[200px]">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-        </svg>
-        Thêm Vào Giỏ Hàng
-      </button>
-      <button class="px-8 bg-orange-600 text-white py-3 rounded-[2px] hover:bg-orange-700 transition-colors shadow-sm min-w-[200px]">
-        Mua Ngay
-      </button>
+      <BaseButton 
+        @click="handleAddToCart"
+        label="Thêm Vào Giỏ Hàng"
+        bgColor="bg-orange-50"
+        textColor="text-orange-500"
+        customClasses="border border-orange-500 hover:bg-orange-100 min-w-[200px]"
+        :leftIcon="ShoppingCart"
+      />
+      <BaseButton 
+        label="Mua Ngay"
+        bgColor="bg-orange-600"
+        textColor="text-white"
+        customClasses="hover:bg-orange-700 min-w-[200px]"
+      />
     </div>
   </div>
 </template>
