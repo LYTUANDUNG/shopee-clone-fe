@@ -35,7 +35,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="banner-wrapper flex mb-5 pt-7" @mouseenter="stopTimer" @mouseleave="startTimer">
+  <div class="banner-wrapper flex mb-5" @mouseenter="stopTimer" @mouseleave="startTimer">
     <!-- Main Carousel -->
     <div class="carousel-container relative w-[800px] h-[235px] rounded-sm overflow-hidden bg-white shadow-sm">
       <div 
