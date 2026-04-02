@@ -62,8 +62,10 @@ export function useProductVariant(
   const popupGroups = computed(() => {
     const groups = new Map<string, Set<string>>();
     for (const variant of product.value.variants) {
-      for (const [key, value] of Object.entries(variant.attributes)) {
+      // for (const [key, value] of Object.entries(variant.attributes)) {
+        for (const [key, value] of Object.entries(variant.attributes || {})) {
         if (!groups.has(key)) groups.set(key, new Set());
+
         groups.get(key)!.add(value);
       }
     }
