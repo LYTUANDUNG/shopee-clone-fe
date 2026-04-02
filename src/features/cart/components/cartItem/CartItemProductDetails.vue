@@ -1,56 +1,57 @@
-<script lang="ts" setup>
-import type { Product } from "../../types/product.types";
-import ProductReviewContainer from '@/features/product/components/ProductReviewContainer.vue';
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
+// Components from develop
+import ProductGallery from '../components/ProductGallery.vue';
+import ProductMetaInfo from '../components/ProductMetaInfo.vue';
+import ShopInfo from '../components/ShopInfo.vue';
+import Breadcrumb from '@/shared/components/molecules/Breadcrumb.vue';
+// Components from feat/product-reviews
+import ProductReviewContainer from '../components/ProductReviewContainer.vue';
+// Constants (Assuming mockData is the updated path from develop)
+import { MOCK_PRODUCT } from '../constants/mockData';
 
-defineProps<{ product: Product, variantImg: string }>();
-const emit = defineEmits<{
-  click: [productId: string]
-}>();
+const route = useRoute();
+const productId = route.params.id as string;
+
+// State
+const product = ref(MOCK_PRODUCT);
+
+const breadcrumbItems = computed(() => [
+  { label: 'Shopee', to: '/' },
+  { label: 'Thời Trang Nữ', to: '/category/thoi-trang-nu' },
+  { label: 'Áo', to: '/category/thoi-trang-nu/ao' },
+  { label: 'Áo thun', to: '/category/thoi-trang-nu/ao-thun' },
+  { label: product.value.name }
+]);
 </script>
 
 <template>
-  <div class="product-item-wrapper"> <div class="product-details cursor-pointer" @click="emit('click', product.id)">
-    <img :src="variantImg" :alt="product.name" class="product-image" />
-    <div class="product-meta">
-      <div class="product-name">{{ product.name }}</div>
-      <img
-          v-if="product.voucherLabel"
-          :src="product.voucherLabel"
-          class="voucher-icon"
-          alt="voucher"
-      />
-    </div>
-  </div>
-
-    <div class="mt-6 border-t border-gray-100 pt-4">
-      <ProductReviewContainer :product-id="product.id" />
+  <div class="container mx-auto px-4 py-8 space-y-4">
+    <div class="mb-4">
+      <Breadcrumb :items="breadcrumbItems" />
     </div>
 
+    <div class="bg-white p-6 rounded shadow-sm border border-gray-100">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+        <div class="md:col-span-5">
+          <ProductGallery :images="product.images" />
+        </div>
+
+        <div class="md:col-span-7">
+          <ProductMetaInfo :product="product" />
+        </div>
+      </div>
+    </div>
+
+    <ShopInfo />
+
+    <ProductReviewContainer :product-id="productId" />
   </div>
 </template>
 
 <style scoped>
-.product-item-wrapper {
-  @apply flex flex-col;
-}
-
-.product-details {
-  @apply flex items-start gap-3;
-}
-
-.product-image {
-  @apply w-20 h-20 object-cover border border-gray-100 rounded-sm;
-}
-
-.product-meta {
-  @apply flex flex-col gap-1 items-start;
-}
-
-.product-name {
-  @apply text-sm line-clamp-2 font-medium;
-}
-
-.voucher-icon {
-  @apply h-4 w-auto object-contain;
+.container {
+  max-width: 1200px;
 }
 </style>
