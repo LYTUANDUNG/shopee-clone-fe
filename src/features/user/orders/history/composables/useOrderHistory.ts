@@ -3,21 +3,19 @@ import type { OrderStatus, OrderTab, Order } from '@/features/user/orders/histor
 import { mockOrders } from '@/features/user/orders/history/mocks/orders';
 
 export function useOrderHistory() {
-  const activeTab = ref<OrderStatus>('all');
+  const activeTab = ref<OrderStatus>('ALL');
 
   const tabs: OrderTab[] = [
-    { key: 'all', label: 'Tất cả' },
-    { key: 'pending_payment', label: 'Chờ thanh toán' },
-    { key: 'shipping', label: 'Vận chuyển' },
-    { key: 'delivering', label: 'Chờ giao hàng' },
-    { key: 'completed', label: 'Hoàn thành' },
-    { key: 'cancelled', label: 'Đã hủy' },
-    { key: 'return_refund', label: 'Trả hàng/Hoàn tiền' },
+    { key: 'ALL', label: 'Tất cả' },
+    { key: 'PENDING_PAYMENT', label: 'Chờ thanh toán' },
+    { key: 'SHIPPING', label: 'Vận chuyển' },
+    { key: 'COMPLETED', label: 'Hoàn thành' },
+    { key: 'CANCELLED', label: 'Đã hủy' },
   ];
 
   const tabsWithCount = computed<OrderTab[]>(() =>
     tabs.map((tab) => {
-      if (tab.key === 'all') return tab;
+      if (tab.key === 'ALL') return tab;
       const count = mockOrders.filter((o) => o.status === tab.key).length;
       return { ...tab, count: count > 0 ? count : undefined };
     })
@@ -25,7 +23,7 @@ export function useOrderHistory() {
 
   // Tab switching = filtering orders
   const filteredOrders = computed<Order[]>(() => {
-    if (activeTab.value === 'all') return mockOrders;
+    if (activeTab.value === 'ALL') return mockOrders;
     return mockOrders.filter((o) => o.status === activeTab.value);
   });
 

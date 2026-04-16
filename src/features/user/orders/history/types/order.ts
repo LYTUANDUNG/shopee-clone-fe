@@ -1,12 +1,9 @@
 export type OrderStatus =
-  | 'all'
-  | 'pending_payment'
-  | 'shipping'
-  | 'delivering'
-  | 'received'
-  | 'completed'
-  | 'cancelled'
-  | 'return_refund';
+  | 'ALL'
+  | 'PENDING_PAYMENT'
+  | 'SHIPPING'
+  | 'COMPLETED'
+  | 'CANCELLED';
 
 export interface OrderTab {
   key: OrderStatus;
@@ -33,7 +30,8 @@ export interface Order {
   isFavoriteShop?: boolean;
   products: OrderProduct[];
   totalPrice: number;
-  status: Exclude<OrderStatus, 'all'>;
+  status: Exclude<OrderStatus, 'ALL'>;
+  paymentMethod?: 'COD' | 'ONLINE';
   deliveryStatus?: string;        // e.g. "Giao hàng thành công"
   cancelledBy?: string;           // e.g. "bạn" | "người bán" | "hệ thống"
   reviewDeadline?: string;        // ISO date string, e.g. "2026-04-28"

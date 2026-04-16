@@ -40,9 +40,9 @@
     <!-- Order total -->
     <div class="order-total">
       <p class="order-total-label">
-        {{ order.status === 'return_refund' ? 'Tổng tiền hoàn:' : 'Thành tiền:' }}
+        Thành tiền:
         <span class="order-total-amount">
-          {{ formatCurrency(order.status === 'return_refund' ? (order.refundAmount ?? order.totalPrice) : order.totalPrice) }}
+          {{ formatCurrency(order.totalPrice) }}
         </span>
       </p>
     </div>

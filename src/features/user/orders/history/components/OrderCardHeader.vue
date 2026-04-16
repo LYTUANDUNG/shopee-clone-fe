@@ -75,26 +75,20 @@ const ShopIcon = defineComponent({
 
 const statusLabel = computed(() => {
   const labels: Record<string, string> = {
-    pending_payment: 'CHỜ THANH TOÁN',
-    shipping: 'VẬN CHUYỂN',
-    delivering: 'CHỜ GIAO HÀNG',
-    received: 'ĐÃ NHẬN ĐƯỢC HÀNG',
-    completed: 'HOÀN THÀNH',
-    cancelled: 'ĐÃ HỦY',
-    return_refund: 'ĐÃ HOÀN TIỀN',
+    PENDING_PAYMENT: 'Chờ thanh toán',
+    SHIPPING: 'Vận chuyển',
+    COMPLETED: 'Hoàn thành',
+    CANCELLED: 'Đã hủy',
   };
   return labels[props.order.status] ?? '';
 });
 
 const statusTextClass = computed(() => {
   const classes: Record<string, string> = {
-    pending_payment: 'text-yellow-500',
-    shipping: 'text-blue-500',
-    delivering: 'text-blue-500',
-    received: 'text-shopee-orange',
-    completed: 'text-shopee-orange',
-    cancelled: 'text-gray-400',
-    return_refund: 'text-red-500',
+    PENDING_PAYMENT: 'text-shopee-orange',
+    SHIPPING: 'text-blue-500',
+    COMPLETED: 'text-shopee-orange',
+    CANCELLED: 'text-gray-400',
   };
   return classes[props.order.status] ?? 'text-gray-500';
 });

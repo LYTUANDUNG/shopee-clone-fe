@@ -3,12 +3,7 @@
     <div class="actions-row">
       <!-- Left: status-specific note -->
       <div class="note-section">
-        <p v-if="order.status === 'delivering'" class="note-text">
-          Vui lòng chỉ nhấn "Đã nhận được hàng" khi đơn hàng đã được giao đến
-          bạn và sản phẩm nhận được không có vấn đề nào.
-        </p>
-
-        <template v-if="order.status === 'completed' && order.reviewDeadline">
+        <template v-if="order.status === 'COMPLETED' && order.reviewDeadline">
           <p class="note-text">
             Đánh giá sản phẩm trước
             <span class="deadline-link">{{
@@ -21,7 +16,7 @@
         </template>
 
         <p
-          v-if="order.status === 'cancelled' && order.cancelledBy"
+          v-if="order.status === 'CANCELLED' && order.cancelledBy"
           class="note-text"
         >
           Đã hủy bởi {{ order.cancelledBy }}
@@ -30,179 +25,20 @@
 
       <!-- Right: action buttons -->
       <div class="btn-group">
-        <!-- completed - chưa đánh giá -->
-        <template v-if="order.status === 'completed' && !order.isReviewed">
-          <BaseButton
-            size="sm"
-            label="Đánh Giá"
-            @click="$emit('rate-order', order)"
-          />
-          <BaseButton
-            v-bind="ghostProps"
-            label="Yêu Cầu Trả Hàng/Hoàn Tiền"
-            @click="$emit('request-return', order)"
-          />
-          <div class="relative">
-            <BaseButton
-              v-bind="ghostProps"
-              custom-classes="border border-gray-300 flex items-center gap-1"
-              @click="toggleMore"
-            >
-              Thêm
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="chevron-icon"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </BaseButton>
-            <div v-if="showMore" class="dropdown-menu">
-              <button
-                class="dropdown-item"
-                @click="
-                  emit('buy-again', order);
-                  showMore = false;
-                "
-              >
-                Mua Lại
-              </button>
-              <button
-                class="dropdown-item"
-                @click="
-                  emit('contact-seller', order);
-                  showMore = false;
-                "
-              >
-                Liên Hệ Người Bán
-              </button>
-              <button
-                class="dropdown-item"
-                @click="
-                  emit('view-detail', order);
-                  showMore = false;
-                "
-              >
-                Xem Chi Tiết Đơn Hàng
-              </button>
-            </div>
-          </div>
-        </template>
-
-        <!-- completed - đã đánh giá -->
-        <template v-else-if="order.status === 'completed' && order.isReviewed">
-          <BaseButton
-            size="sm"
-            label="Mua Lại"
-            @click="$emit('buy-again', order)"
-          />
-          <BaseButton
-            v-bind="ghostProps"
-            label="Liên Hệ Người Bán"
-            @click="$emit('contact-seller', order)"
-          />
-        </template>
-
-        <!-- pending_payment -->
-        <template v-else-if="order.status === 'pending_payment'">
-          <BaseButton
-            v-bind="ghostProps"
-            label="Hủy Đơn Hàng"
-            @click="$emit('cancel-order', order)"
-          />
-          <BaseButton
-            size="sm"
-            label="Tiếp Tục Thanh Toán"
-            @click="$emit('continue-payment', order)"
-          />
-        </template>
-
-        <!-- shipping -->
-        <template v-else-if="order.status === 'shipping'">
-          <BaseButton
-            v-bind="ghostProps"
-            label="Liên Hệ Người Bán"
-            @click="$emit('contact-seller', order)"
-          />
-          <BaseButton
-            size="sm"
-            label="Đã Nhận Được Hàng"
-            @click="$emit('confirm-received', order)"
-          />
-        </template>
-
-        <!-- delivering -->
-        <template v-else-if="order.status === 'delivering'">
-          <BaseButton
-            v-bind="ghostGrayProps"
-            label="Đã Nhận Hàng"
-            @click="$emit('confirm-received', order)"
-          />
-          <BaseButton
-            v-bind="ghostGrayProps"
-            label="Yêu Cầu Trả Hàng/Hoàn Tiền"
-            @click="$emit('request-return', order)"
-          />
-          <BaseButton
-            v-bind="ghostProps"
-            label="Liên Hệ Người Bán"
-            @click="$emit('contact-seller', order)"
-          />
-        </template>
-
-        <!-- received -->
-        <template v-else-if="order.status === 'received'">
-          <BaseButton
-            size="sm"
-            label="Đã Nhận Hàng"
-            @click="$emit('confirm-received', order)"
-          />
-          <BaseButton
-            size="sm"
-            label="Yêu Cầu Trả Hàng/Hoàn Tiền"
-            @click="$emit('request-return', order)"
-          />
-          <BaseButton
-            v-bind="ghostProps"
-            label="Liên Hệ Người Bán"
-            @click="$emit('contact-seller', order)"
-          />
-        </template>
-
-        <!-- cancelled -->
-        <template v-else-if="order.status === 'cancelled'">
-          <BaseButton
-            size="sm"
-            label="Mua Lại"
-            @click="$emit('buy-again', order)"
-          />
-          <BaseButton
-            v-bind="ghostProps"
-            label="Xem Thông Tin Hoàn Tiền"
-            @click="$emit('view-refund-info', order)"
-          />
-          <BaseButton
-            v-bind="ghostProps"
-            label="Liên Hệ Người Bán"
-            @click="$emit('contact-seller', order)"
-          />
-        </template>
-
-        <!-- return_refund: không có button -->
+        <BaseButton
+          v-for="action in currentActions"
+          :key="action.eventName"
+          v-bind="action.props"
+          :label="action.label"
+          @click="handleAction(action.eventName, order)"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed } from "vue";
 import type { Order } from "@/features/user/orders/history/types/order";
 import BaseButton from "@/shared/components/atoms/BaseButton.vue";
 
@@ -220,12 +56,6 @@ const emit = defineEmits<{
   (e: "view-detail", order: Order): void;
 }>();
 
-const showMore = ref(false);
-
-const toggleMore = () => {
-  showMore.value = !showMore.value;
-};
-
 // Shared ghost button props — dùng v-bind để tái sử dụng
 const ghostProps = {
   size: "sm" as const,
@@ -234,10 +64,44 @@ const ghostProps = {
   customClasses: "border border-gray-300 hover:bg-gray-200",
 };
 
-const ghostGrayProps = {
-  ...ghostProps,
-  customClasses:
-    "!bg-gray-300 border border-gray-300 !text-gray-700 cursor-default pointer-events-none",
+interface ActionConfig {
+  label: string;
+  eventName:
+    | "rate-order"
+    | "buy-again"
+    | "contact-seller"
+    | "continue-payment"
+    | "cancel-order"
+    | "confirm-received"
+    | "request-return"
+    | "view-refund-info"
+    | "view-detail";
+  props?: Record<string, any>;
+}
+
+const actionsMap: Record<string, ActionConfig[]> = {
+  PENDING_PAYMENT: [
+    { label: "Hủy Đơn", eventName: "cancel-order", props: ghostProps },
+    { label: "Thanh Toán Lại", eventName: "continue-payment", props: { size: "sm" } },
+  ],
+  SHIPPING: [
+    { label: "Xem Chi Tiết", eventName: "view-detail", props: { size: "sm" } },
+  ],
+  COMPLETED: [
+    { label: "Mua Lại", eventName: "buy-again", props: { size: "sm" } },
+    { label: "Đánh Giá", eventName: "rate-order", props: ghostProps },
+  ],
+  CANCELLED: [
+    { label: "Mua Lại", eventName: "buy-again", props: { size: "sm" } },
+  ],
+};
+
+const currentActions = computed(() => {
+  return actionsMap[props.order.status] || [];
+});
+
+const handleAction = (eventName: string, order: Order) => {
+  emit(eventName as any, order);
 };
 
 const formatDeadline = (iso: string) => {
