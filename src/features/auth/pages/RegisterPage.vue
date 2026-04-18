@@ -1,130 +1,33 @@
 <script setup lang="ts">
-import { ref, computed, onUnmounted } from 'vue';
-import { useRouter } from 'vue-router';
 import AuthLayout from '@/features/layouts/AuthLayout.vue';
 import BaseInput from '@/shared/components/atoms/BaseInput.vue';
 import BaseButton from '@/shared/components/atoms/BaseButton.vue';
 import BaseLink from '@/shared/components/atoms/BaseLink.vue';
+import { useRegisterFlow } from '../composables/useRegisterFlow';
+import { REGISTER_CONSTANTS } from '../constants/register.constants';
 
-const router = useRouter();
+const C = REGISTER_CONSTANTS;
 
-// ─── State ───────────────────────────────────────────────────────────────────
-const step = ref<1 | 2 | 3>(1);
-
-// Step 1 – Phone
-const phone = ref('');
-const phoneError = ref('');
-
-// Step 2 – OTP
-const otp = ref('');
-const otpError = ref('');
-const countdown = ref(60);
-const canResend = ref(false);
-let countdownTimer: ReturnType<typeof setInterval> | null = null;
-
-// Step 3 – Password
-const password = ref('');
-const passwordError = ref('');
-const isSubmitting = ref(false);
-
-// ─── Validators ──────────────────────────────────────────────────────────────
-const PHONE_REGEX = /^(0[3|5|7|8|9])[0-9]{8}$/;
-const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
-
-const isPhoneValid = computed(() => PHONE_REGEX.test(phone.value));
-const isOtpValid  = computed(() => otp.value.length === 6);
-const isPasswordValid = computed(() => PASSWORD_REGEX.test(password.value));
-
-// ─── Step label ──────────────────────────────────────────────────────────────
-const stepLabel = computed(() => {
-  if (step.value === 1) return 'Nhập số điện thoại';
-  if (step.value === 2) return 'Xác minh OTP';
-  return 'Tạo mật khẩu';
-});
-
-// ─── OTP countdown ───────────────────────────────────────────────────────────
-function startCountdown() {
-  countdown.value = 60;
-  canResend.value = false;
-  if (countdownTimer) clearInterval(countdownTimer);
-  countdownTimer = setInterval(() => {
-    countdown.value--;
-    if (countdown.value <= 0) {
-      clearInterval(countdownTimer!);
-      canResend.value = true;
-    }
-  }, 1000);
-}
-
-onUnmounted(() => {
-  if (countdownTimer) clearInterval(countdownTimer);
-});
-
-// ─── Handlers ────────────────────────────────────────────────────────────────
-
-// Step 1: validate phone → go to OTP
-function handlePhoneSubmit() {
-  phoneError.value = '';
-  if (!isPhoneValid.value) {
-    phoneError.value = 'Số điện thoại không hợp lệ (phải là 10 số, bắt đầu bằng 03/05/07/08/09)';
-    return;
-  }
-  // TODO: gọi API send-otp ở đây
-  step.value = 2;
-  startCountdown();
-}
-
-// Step 2: gọi API verify-otp → go to password
-async function handleOtpSubmit() {
-  otpError.value = '';
-  if (!isOtpValid.value) {
-    otpError.value = 'Mã OTP phải đủ 6 chữ số';
-    return;
-  }
-  try {
-    // TODO: thay bằng API call thực tế
-    // await verifyOtp({ phone: phone.value, otp: otp.value })
-    await new Promise(r => setTimeout(r, 500)); // giả lập network
-    step.value = 3;
-  } catch {
-    otpError.value = 'Mã OTP không đúng, vui lòng thử lại';
-  }
-}
-
-function handleResendOtp() {
-  otp.value = '';
-  otpError.value = '';
-  // TODO: gọi lại API send-otp
-  startCountdown();
-}
-
-// Step 3: validate password → call API register → redirect
-async function handlePasswordSubmit() {
-  passwordError.value = '';
-  if (!isPasswordValid.value) {
-    passwordError.value = 'Mật khẩu tối thiểu 8 ký tự, bao gồm cả chữ và số';
-    return;
-  }
-  isSubmitting.value = true;
-  try {
-    // TODO: thay bằng API call thực tế
-    // await registerApi({ phone: phone.value, otp: otp.value, password: password.value })
-    await new Promise(r => setTimeout(r, 800)); // giả lập network
-    router.push('/login');
-  } catch {
-    passwordError.value = 'Đăng ký thất bại, vui lòng thử lại';
-  } finally {
-    isSubmitting.value = false;
-  }
-}
+const {
+  step,
+  phone, phoneError,
+  otp, otpError, isVerifyingOtp, countdown, canResend,
+  password, passwordError, isSubmitting,
+  isPhoneValid, isOtpValid, isPasswordValid,
+  stepLabel, passwordHints,
+  handlePhoneSubmit,
+  handleOtpSubmit,
+  handleResendOtp,
+  handlePasswordSubmit,
+} = useRegisterFlow();
 </script>
 
 <template>
   <AuthLayout>
     <template #header-title>Đăng ký</template>
 
-    <div class="register-outer flex justify-end w-full">
-      <div class="register-card bg-white p-8 rounded-sm shadow-lg w-[400px]">
+    <div class="flex justify-end w-full">
+      <div class="bg-white p-8 rounded-sm shadow-lg w-[400px]">
 
         <!-- ── Header ─────────────────────────────────── -->
         <div class="mb-6">
@@ -132,13 +35,13 @@ async function handlePasswordSubmit() {
 
           <!-- Step indicator -->
           <div class="step-indicator mt-3 flex items-center gap-2">
-            <template v-for="n in 3" :key="n">
+            <template v-for="n in C.TOTAL_STEPS" :key="n">
               <div
                 class="step-dot"
                 :class="{
                   'step-dot--active':  n === step,
                   'step-dot--done':    n < step,
-                  'step-dot--pending': n > step
+                  'step-dot--pending': n > step,
                 }"
               >
                 <svg v-if="n < step" width="10" height="10" viewBox="0 0 12 12" fill="none">
@@ -146,7 +49,7 @@ async function handlePasswordSubmit() {
                 </svg>
                 <span v-else class="step-dot__num">{{ n }}</span>
               </div>
-              <div v-if="n < 3" class="step-line" :class="{ 'step-line--done': n < step }"></div>
+              <div v-if="n < C.TOTAL_STEPS" class="step-line" :class="{ 'step-line--done': n < step }"></div>
             </template>
           </div>
 
@@ -159,17 +62,17 @@ async function handlePasswordSubmit() {
             v-model="phone"
             placeholder="Số điện thoại"
             :is-number-only="true"
-            maxlength="10"
+            :maxlength="C.PHONE_MAX_LENGTH"
             :error="phoneError"
           />
           <BaseButton
             type="submit"
             size="xl"
-            label="TIẾP THEO"
+            :label="C.LABELS.STEP_NEXT"
             :disabled="!isPhoneValid"
             :custom-classes="[
               'w-full text-white font-medium transition-all',
-              isPhoneValid ? 'bg-[#ee4d2d] hover:opacity-90' : 'bg-gray-300 cursor-not-allowed'
+              isPhoneValid ? 'bg-[#ee4d2d] hover:opacity-90' : 'bg-gray-300 cursor-not-allowed',
             ].join(' ')"
           />
         </form>
@@ -184,14 +87,14 @@ async function handlePasswordSubmit() {
             v-model="otp"
             placeholder="Nhập mã OTP (6 số)"
             :is-number-only="true"
-            maxlength="6"
+            :maxlength="C.OTP_LENGTH"
             :error="otpError"
           />
 
           <!-- Countdown / Resend -->
           <div class="text-right text-sm">
             <span v-if="!canResend" class="text-gray-400">
-              Gửi lại sau
+              {{ C.LABELS.RESEND_COUNTDOWN }}
               <span class="text-[#ee4d2d] font-semibold tabular-nums">{{ countdown }}s</span>
             </span>
             <button
@@ -200,7 +103,7 @@ async function handlePasswordSubmit() {
               class="text-[#ee4d2d] font-medium hover:opacity-80 transition-opacity"
               @click="handleResendOtp"
             >
-              Gửi lại mã OTP
+              {{ C.LABELS.RESEND_OTP }}
             </button>
           </div>
 
@@ -208,7 +111,7 @@ async function handlePasswordSubmit() {
             <BaseButton
               type="button"
               size="xl"
-              label="QUAY LẠI"
+              :label="C.LABELS.STEP_BACK"
               bg-color="bg-white"
               text-color="text-gray-500"
               custom-classes="flex-1 border border-gray-200 hover:bg-gray-50 font-medium transition-all"
@@ -217,11 +120,11 @@ async function handlePasswordSubmit() {
             <BaseButton
               type="submit"
               size="xl"
-              label="XÁC NHẬN"
-              :disabled="!isOtpValid"
+              :label="C.LABELS.OTP_CONFIRM"
+              :disabled="!isOtpValid || isVerifyingOtp"
               :custom-classes="[
                 'flex-1 text-white font-medium transition-all',
-                isOtpValid ? 'bg-[#ee4d2d] hover:opacity-90' : 'bg-gray-300 cursor-not-allowed'
+                isOtpValid && !isVerifyingOtp ? 'bg-[#ee4d2d] hover:opacity-90' : 'bg-gray-300 cursor-not-allowed',
               ].join(' ')"
             />
           </div>
@@ -236,30 +139,29 @@ async function handlePasswordSubmit() {
             :error="passwordError"
           />
 
-          <!-- Password strength hint -->
+          <!-- Password strength hints -->
           <div class="password-hints text-xs space-y-1">
-            <div class="hint-item" :class="password.length >= 8 ? 'hint--ok' : 'hint--no'">
-              <span class="hint-icon">{{ password.length >= 8 ? '✓' : '○' }}</span>
-              Ít nhất 8 ký tự
-            </div>
-            <div class="hint-item" :class="/[a-zA-Z]/.test(password) ? 'hint--ok' : 'hint--no'">
-              <span class="hint-icon">{{ /[a-zA-Z]/.test(password) ? '✓' : '○' }}</span>
-              Có chữ cái
-            </div>
-            <div class="hint-item" :class="/\d/.test(password) ? 'hint--ok' : 'hint--no'">
-              <span class="hint-icon">{{ /\d/.test(password) ? '✓' : '○' }}</span>
-              Có chữ số
+            <div
+              v-for="hint in C.PASSWORD_HINTS"
+              :key="hint.key"
+              class="hint-item"
+              :class="passwordHints[hint.key as keyof typeof passwordHints] ? 'hint--ok' : 'hint--no'"
+            >
+              <span class="hint-icon">
+                {{ passwordHints[hint.key as keyof typeof passwordHints] ? '✓' : '○' }}
+              </span>
+              {{ hint.label }}
             </div>
           </div>
 
           <BaseButton
             type="submit"
             size="xl"
-            :label="isSubmitting ? 'ĐANG XỬ LÝ...' : 'ĐĂNG KÝ'"
+            :label="isSubmitting ? C.LABELS.REGISTERING : C.LABELS.REGISTER"
             :disabled="!isPasswordValid || isSubmitting"
             :custom-classes="[
               'w-full text-white font-medium transition-all',
-              isPasswordValid && !isSubmitting ? 'bg-[#ee4d2d] hover:opacity-90' : 'bg-gray-300 cursor-not-allowed'
+              isPasswordValid && !isSubmitting ? 'bg-[#ee4d2d] hover:opacity-90' : 'bg-gray-300 cursor-not-allowed',
             ].join(' ')"
           />
         </form>
@@ -278,8 +180,11 @@ async function handlePasswordSubmit() {
                 text-color="text-[#222]"
                 custom-classes="border !border-black/10 hover:bg-gray-50 font-normal shadow-sm flex items-center justify-center h-10"
               >
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png"
-                     class="w-5 h-5 mr-2" alt="FB"/>
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png"
+                  class="w-5 h-5 mr-2"
+                  alt="Facebook"
+                />
                 Facebook
               </BaseButton>
               <BaseButton
@@ -287,8 +192,11 @@ async function handlePasswordSubmit() {
                 text-color="text-[#222]"
                 custom-classes="border !border-black/10 hover:bg-gray-50 font-normal shadow-sm flex items-center justify-center h-10"
               >
-                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
-                     class="w-5 h-5 mr-2" alt="GG"/>
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                  class="w-5 h-5 mr-2"
+                  alt="Google"
+                />
                 Google
               </BaseButton>
             </div>
@@ -303,7 +211,7 @@ async function handlePasswordSubmit() {
 
         <div class="mt-8 text-center text-sm text-gray-400 border-t pt-6 border-gray-100">
           Bạn đã có tài khoản?
-          <BaseLink to="/login" variant="orange" class="font-bold ml-1 no-underline">Đăng nhập</BaseLink>
+          <BaseLink :to="C.ROUTES.LOGIN" variant="orange" class="font-bold ml-1 no-underline">Đăng nhập</BaseLink>
         </div>
 
       </div>
@@ -325,25 +233,10 @@ async function handlePasswordSubmit() {
   flex-shrink: 0;
   transition: background-color 0.25s, color 0.25s;
 }
-
-.step-dot--active {
-  background: #ee4d2d;
-  color: white;
-}
-
-.step-dot--done {
-  background: #ee4d2d;
-  color: white;
-}
-
-.step-dot--pending {
-  background: #e8e8e8;
-  color: #aaa;
-}
-
-.step-dot__num {
-  line-height: 1;
-}
+.step-dot--active { background: #ee4d2d; color: white; }
+.step-dot--done   { background: #ee4d2d; color: white; }
+.step-dot--pending { background: #e8e8e8; color: #aaa; }
+.step-dot__num { line-height: 1; }
 
 .step-line {
   flex: 1;
@@ -351,10 +244,7 @@ async function handlePasswordSubmit() {
   background: #e8e8e8;
   transition: background-color 0.25s;
 }
-
-.step-line--done {
-  background: #ee4d2d;
-}
+.step-line--done { background: #ee4d2d; }
 
 /* ── Password hints ──────────────────────────────── */
 .password-hints {
@@ -363,20 +253,13 @@ async function handlePasswordSubmit() {
   border-radius: 4px;
   padding: 8px 12px;
 }
-
 .hint-item {
   display: flex;
   align-items: center;
   gap: 6px;
   transition: color 0.2s;
 }
-
-.hint--ok  { color: #27ae60; }
-.hint--no  { color: #bbb; }
-
-.hint-icon {
-  font-size: 12px;
-  width: 14px;
-  text-align: center;
-}
+.hint--ok { color: #27ae60; }
+.hint--no { color: #bbb; }
+.hint-icon { font-size: 12px; width: 14px; text-align: center; }
 </style>
