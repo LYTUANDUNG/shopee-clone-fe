@@ -1,3 +1,5 @@
+import http from '@/lib/http';
+
 export interface SendOtpPayload {
   phone: string;
 }
@@ -18,23 +20,15 @@ export interface RegisterResponse {
 }
 
 export const registerApi = {
-  sendOtp: async (_payload: SendOtpPayload): Promise<void> => {
-    // TODO: replace with real HTTP call, e.g.:
-    // return httpClient.post('/auth/send-otp', payload)
-    return new Promise<void>((resolve) => setTimeout(resolve, 400));
+  sendOtp: async (payload: SendOtpPayload): Promise<void> => {
+    return http.post('/auth/send-otp', payload);
   },
 
-  verifyOtp: async (_payload: VerifyOtpPayload): Promise<void> => {
-    // TODO: replace with real HTTP call, e.g.:
-    // return httpClient.post('/auth/verify-otp', payload)
-    return new Promise<void>((resolve) => setTimeout(resolve, 500));
+  verifyOtp: async (payload: VerifyOtpPayload): Promise<void> => {
+    return http.post('/auth/verify-otp', payload);
   },
 
-  register: async (_payload: RegisterPayload): Promise<RegisterResponse> => {
-    // TODO: replace with real HTTP call, e.g.:
-    // return httpClient.post('/auth/register', payload)
-    return new Promise<RegisterResponse>((resolve) =>
-      setTimeout(() => resolve({ message: 'Đăng ký thành công' }), 800)
-    );
+  register: async (payload: RegisterPayload): Promise<RegisterResponse> => {
+    return http.post('/auth/register', payload);
   },
 };

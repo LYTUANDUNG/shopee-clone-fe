@@ -2,6 +2,7 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 import { useAuthStore } from '@/stores/auth'
+import { loginApi } from '@/features/auth/api/login.api'
 
 export function useLoginForm() {
     const authStore = useAuthStore()
@@ -32,27 +33,21 @@ export function useLoginForm() {
 
     const onSubmit = handleSubmit(async (values) => {
         try {
+            // Xác định payload là email hay số điện thoại (tạm thời gán vào email)
+            const payload = {
+                email: values.email,
+                password: values.password
+            };
 
-            await new Promise((resolve) => setTimeout(resolve, 1500))
+            // Gọi API thật
+            const response = await loginApi.login(payload);
 
+            //  Cập nhật auth state vào Pinia (đồng thời lưu localStorage trong setAuth)
+            authStore.setAuth(response.user, response.accessToken);
 
-            const mockResponse = {
-                user: {
-                    id: 'user_01',
-                    name: 'Tuan Dung',
-                    email: values.email
-                },
-                accessToken: 'shopee_clone_token_2026'
-            }
-
-            //  Cập nhật auth state vào Pinia
-            authStore.setAuth(mockResponse.user, mockResponse.accessToken)
-
-            // Lưu token vào localStorage
-            localStorage.setItem('access_token', mockResponse.accessToken)
-
-        } catch (error) {
-            console.error('Đăng nhập thất bại:', error)
+        } catch (error: any) {
+            console.error('Đăng nhập thất bại:', error);
+            // Có thể map lỗi từ error.response.data.message về form errors ở đây
         }
     })
 
