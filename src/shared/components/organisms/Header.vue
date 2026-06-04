@@ -86,6 +86,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import {
   Bell as BellIcon,
   CircleHelp as HelpCircleIcon,
@@ -100,12 +101,13 @@ import {
 import LogoShopee from '@/shared/components/atoms/LogoShopee.vue';
 import SearchInput from '@/shared/components/molecules/SearchInput.vue';
 
+const router = useRouter();
 const searchQuery = ref('');
 
 const handleSearch = (value) => {
   const content = (typeof value === 'string' ? value : searchQuery.value).trim();
   if (content) {
-    console.log(`Đang tìm kiếm: ${content}`);
+    router.push({ name: 'search', query: { keyword: content } });
   }
 };
 </script>

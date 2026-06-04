@@ -37,6 +37,12 @@ const router = createRouter({
             name: 'profile',
             component: () => import('@/features/user/pages/ProfilePage.vue'),
             meta: { title: 'Hồ sơ | Shopee Clone' }
+        },
+        {
+            path: '/search',
+            name: 'search',
+            component: () => import('@/features/product/pages/ProductListPage.vue'),
+            meta: { title: 'Tìm kiếm | Shopee Việt Nam' }
         }
     ]
 })
