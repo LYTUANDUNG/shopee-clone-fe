@@ -125,7 +125,7 @@ const increaseQuantity = () => {
     <!-- Info Grid -->
     <div class="mt-6 flex flex-col gap-6 px-4">
        <!-- Voucher -->
-       <div class="flex items-center">
+       <div class="flex items-center" v-if="product.vouchers && product.vouchers.length > 0">
           <span class="text-gray-500 w-28 text-sm flex-shrink-0">Voucher Của Shop</span>
           <div class="flex flex-wrap gap-2">
             <span 
@@ -160,7 +160,7 @@ const increaseQuantity = () => {
        </div>
 
       <!-- Variants -->
-      <div v-if="product.variants" class="flex flex-col gap-6 mt-2">
+      <div v-if="product.variants && product.variants.length > 0" class="flex flex-col gap-6 mt-2">
         <div v-for="variant in product.variants" :key="variant.type" class="flex flex-col sm:flex-row sm:items-baseline">
           <span class="text-gray-500 w-28 text-sm flex-shrink-0">{{ variant.type }}</span>
           <div class="flex flex-wrap gap-2">

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import {
   ProductCard,
   ProductFilterSidebar,
@@ -63,6 +63,11 @@ const onPageChange = (page: number) => {
 
 const onPageNumChange = (page: number) => {
     goToPage(page);
+};
+
+const router = useRouter();
+const onSelectProduct = (productId: string | number) => {
+  router.push(`/product/${productId}`);
 };
 </script>
 
@@ -128,6 +133,7 @@ const onPageNumChange = (page: number) => {
             v-for="product in products"
             :key="product.id"
             :product="product"
+            @select-product="onSelectProduct"
           />
         </div>
 
